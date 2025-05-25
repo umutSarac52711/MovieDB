@@ -1,0 +1,100 @@
+﻿YourSolutionName/
+├── YourProjectName.csproj
+├── Program.cs                     // Main entry point, service registration
+├── App.razor                      // Root component, router setup
+├── _Imports.razor                 // Global using statements for Razor components
+│
+├── Pages/                         // Routable components (your website pages)
+│   ├── Index.razor                // Home page (we created this)
+│   │
+│   ├── Movies/
+│   │   ├── MovieList.razor        // Page to list all movies (e.g., /movies)
+│   │   ├── MovieDetails.razor     // Page for a single movie's details (e.g., /movies/{id})
+│   │   └── MovieForm.razor        // Page for adding/editing a movie (e.g., /movies/add, /movies/edit/{id})
+│   │
+│   ├── Actors/
+│   │   ├── ActorList.razor        // Page to list all actors (e.g., /actors)
+│   │   ├── ActorDetails.razor     // Page for a single actor's details (e.g., /actors/{id})
+│   │   └── ActorForm.razor        // Page for adding/editing an actor
+│   │
+│   ├── Directors/
+│   │   ├── DirectorList.razor
+│   │   ├── DirectorDetails.razor
+│   │   └── DirectorForm.razor
+│   │
+│   ├── ProductionCompanies/
+│   │   ├── CompanyList.razor
+│   │   ├── CompanyDetails.razor
+│   │   └── CompanyForm.razor
+│   │
+│   ├── Reviews/                    // Optional: if you have dedicated pages for reviews beyond movie details
+│   │   └── ReviewForm.razor       // e.g., A page to submit a review if not directly on MovieDetails
+│   │
+│   ├── Awards/                     // Optional: if you have dedicated pages for awards
+│   │   └── AwardList.razor        // e.g., A page listing all awards given or award categories
+│   │   └── AwardForm.razor        // e.g., Admin page to create new award types
+│   │
+│   ├── Admin/                      // Optional: For admin-specific functionality
+│   │   ├── Dashboard.razor
+│   │   ├── UserManagement.razor    // (If you add users)
+│   │   └── ContentModeration.razor // (e.g., for reviews)
+│   │
+│   └── _Host.cshtml               // (Blazor Server only)
+│   └── _Layout.cshtml             // (Blazor Server only, if not using MainLayout exclusively)
+│
+├── Shared/                        // Reusable UI components, layouts
+│   ├── MainLayout.razor           // Main application layout (header, footer, nav)
+│   ├── NavMenu.razor              // Navigation menu component
+│   ├── MovieCard.razor            // Component to display a single movie card (used on Index, MovieList)
+│   ├── ActorCard.razor            // (If you create a similar card for actors)
+│   ├── DirectorCard.razor         // (If you create a similar card for directors)
+│   ├── LoadingIndicator.razor     // Component to show while data is loading
+│   ├── Pagination.razor           // Reusable pagination component
+│   ├── ConfirmationDialog.razor   // Reusable modal for delete confirmations etc.
+│   └── SurveyPrompt.razor         // (Default Blazor component, can remove if not used)
+│
+├── Data/                          // Data access layer, models, DbContext
+│   ├── MovieDbContext.cs          // Your Entity Framework DbContext
+│   │
+│   ├── Models/                    // Your C# entity classes (can be here or in a separate class library)
+│   │   ├── Movie.cs
+│   │   ├── Actor.cs
+│   │   ├── Director.cs
+│   │   ├── ProductionCompany.cs
+│   │   ├── Review.cs
+│   │   ├── Award.cs
+│   │   ├── Awardable.cs
+│   │   ├── MovieGenre.cs
+│   │   ├── MovieCompany.cs
+│   │   └── Features.cs
+│   │
+│   └── (Optional) Repositories/   // If you use the Repository pattern
+│       ├── IMovieRepository.cs
+│       └── MovieRepository.cs
+│       └── ...etc.
+│
+├── Services/                      // Business logic services, helper services
+│   ├── (Optional) MovieSearchService.cs // Example: complex search logic
+│   └── (Optional) ImageUploadService.cs // Example: if handling image uploads
+│
+├── ViewModels/ (or DTOs/)         // Optional: For models specific to views, not directly your EF entities
+│   ├── MovieFormViewModel.cs
+│   └── ReviewSubmissionViewModel.cs
+│
+├── wwwroot/                       // Static files (CSS, JavaScript, images)
+│   ├── css/
+│   │   ├── app.css                // Your primary custom CSS
+│   │   ├── bootstrap/             // (If using Bootstrap - default in many templates)
+│   │   │   └── bootstrap.min.css
+│   │   └── open-iconic/           // (If using Open Iconic - default)
+│   ├── images/
+│   │   ├── logo.png
+│   │   ├── hero-background.jpg
+│   │   └── movie-posters/         // (Potentially where you might store posters if locally hosted)
+│   ├── js/
+│   │   └── custom.js              // Any custom JavaScript (try to minimize in Blazor)
+│   ├── favicon.ico
+│   └── index.html                 // (Blazor WebAssembly only)
+│
+└── appsettings.json               // Configuration settings (incl. ConnectionString)
+└── appsettings.Development.json

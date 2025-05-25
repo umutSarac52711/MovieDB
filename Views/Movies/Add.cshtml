@@ -1,0 +1,56 @@
+@model MovieViewModel
+
+@{
+    ViewBag.Title = "Add Movie"; // Daha açıklayıcı bir başlık
+    Layout = "_Layout";
+}
+
+<h2>Add Movie</h2>
+
+<form method="post" asp-action="Add">
+    <div class="mt-3">
+        <label class="form-label">Name</label>
+        <input type="text" class="form-control" asp-for="Title" />
+        <span asp-validation-for="Title" class="text-danger"></span>
+    
+        <label class="form-label">Release Date</label>
+        <input type="date" class="form-control" asp-for="Release_Date" />
+        <span asp-validation-for="Release_Date" class="text-danger"></span>
+
+        <label class="form-label">Language</label>
+        <input type="text" class="form-control" asp-for="Language" />
+        <span asp-validation-for="Language" class="text-danger"></span>
+
+        <label class="form-label">Duration (minutes)</label>
+        <input type="number" class="form-control" asp-for="Duration" />
+        <span asp-validation-for="Duration" class="text-danger"></span>
+
+        <label class="form-label">Budget</label>
+        <input type="number" step="0.01" class="form-control" asp-for="Budget" />
+        <span asp-validation-for="Budget" class="text-danger"></span>
+
+        <label class="form-label">Revenue</label>
+        <input type="number" step="0.01" class="form-control" asp-for="Revenue" />
+        <span asp-validation-for="Revenue" class="text-danger"></span>
+
+        <label class="form-label">Rating</label>
+        <input type="number" step="0.1" class="form-control" asp-for="Rating" />
+        <span asp-validation-for="Rating" class="text-danger"></span>
+
+        <label class="form-label">Poster URL</label>
+        <input type="url" class="form-control" asp-for="PosterUrl" />
+        <span asp-validation-for="PosterUrl" class="text-danger"></span>
+        
+        <!-- Genre Addition -->
+        <label class="form-label">Genres (comma separated)</label>
+        <input type="text" class="form-control" asp-for="Genres" placeholder="e.g., Action, Drama, Comedy" />
+        <span asp-validation-for="Genres" class="text-danger"></span>
+
+        <!-- Company Addition -->
+        <label class="form-label">Companies (comma separated)</label>
+        <input type="text" class="form-control" asp-for="Companies" placeholder="e.g., Warner Bros, Universal Pictures" />
+        <span asp-validation-for="Companies" class="text-danger"></span>
+
+        <button type="submit" class="btn btn-primary mt-3">Add Movie</button>
+    </div>
+</form>
