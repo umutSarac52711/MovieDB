@@ -48,7 +48,7 @@ public class ActorsController : Controller
             await dbContext.Actors.AddAsync(actor); // dbContext.Actors'a eklendi
             await dbContext.SaveChangesAsync(); 
             TempData["SuccessMessage"] = "Actor successfully added!"; // Mesaj güncellendi
-            return RedirectToAction(nameof(Add));
+            return RedirectToAction(nameof(List));
         }
         return View(model);
     }

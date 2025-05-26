@@ -70,7 +70,7 @@ public class MoviesController : Controller
             await dbContext.Movies.AddAsync(movie);
             await dbContext.SaveChangesAsync(); 
             TempData["SuccessMessage"] = "Movie successfully added!";
-            return RedirectToAction(nameof(Add));
+            return RedirectToAction(nameof(List));
         }
         return View(model);
     }
