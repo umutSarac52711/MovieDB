@@ -1,0 +1,30 @@
+@model MovieDB.Models.ActorViewModel
+
+@{
+    ViewBag.Title = "Add Actor"; 
+    Layout = "_Layout";
+}
+
+<h2>Add Actor</h2>
+
+<form method="post" asp-action="Add">
+    <div class="mt-3">
+        <label class="form-label">Name</label>
+        <input type="text" class="form-control" asp-for="Name" />
+        <span asp-validation-for="Name" class="text-danger"></span>
+    
+        <label class="form-label">Birth Date</label>
+        <input type="date" class="form-control" asp-for="Birth_Date" />
+        <span asp-validation-for="Birth_Date" class="text-danger"></span>
+
+        <label class="form-label">Nationality</label>
+        <input type="text" class="form-control" asp-for="Nationality" />
+        <span asp-validation-for="Nationality" class="text-danger"></span>
+
+        <button type="submit" class="btn btn-primary mt-3">Add Actor</button>
+    </div>
+</form>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

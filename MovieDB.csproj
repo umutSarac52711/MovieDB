@@ -19,4 +19,10 @@
       </PackageReference>
     </ItemGroup>
 
+    <ItemGroup>
+      <AdditionalFiles Include="Views\Actors\Add.cshtml" />
+      <AdditionalFiles Include="Views\Actors\Edit.cshtml" />
+      <AdditionalFiles Include="Views\Actors\List.cshtml" />
+    </ItemGroup>
+
 </Project>
