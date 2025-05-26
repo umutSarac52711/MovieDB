@@ -23,6 +23,9 @@
       <AdditionalFiles Include="Views\Actors\Add.cshtml" />
       <AdditionalFiles Include="Views\Actors\Edit.cshtml" />
       <AdditionalFiles Include="Views\Actors\List.cshtml" />
+      <AdditionalFiles Include="Views\ProductionCompanies\Add.cshtml" />
+      <AdditionalFiles Include="Views\ProductionCompanies\Edit.cshtml" />
+      <AdditionalFiles Include="Views\ProductionCompanies\List.cshtml" />
     </ItemGroup>
 
 </Project>

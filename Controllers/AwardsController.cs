@@ -43,6 +43,7 @@ public class AwardsController : Controller // Renamed from ActorsController
         var viewModel = new AwardViewModel
         {
             Awardables = await GetAwardablesSelectList()
+            
         };
         return View(viewModel);
     }
@@ -56,6 +57,7 @@ public class AwardsController : Controller // Renamed from ActorsController
             {
                 Name = model.Name,
                 Award_Year = model.Year,
+                Category = model.Category,
                 Awardable_ID = model.Awardable_ID // Handle 0 as null
             };
 
@@ -100,6 +102,7 @@ public class AwardsController : Controller // Renamed from ActorsController
             Award_ID = award.Award_ID,
             Name = award.Name,
             Year = award.Award_Year,
+            Category = award.Category,
             Awardable_ID = award.Awardable_ID,
             Awardables = await GetAwardablesSelectList()
         };
@@ -121,6 +124,7 @@ public class AwardsController : Controller // Renamed from ActorsController
 
             award.Name = model.Name;
             award.Award_Year = model.Year;
+            award.Category = model.Category;
             award.Awardable_ID = model.Awardable_ID;
             
             await dbContext.SaveChangesAsync();

@@ -7,6 +7,22 @@
 
 <h2>Add Award</h2>
 
+@if (!ViewData.ModelState.IsValid)
+{
+    <div class="alert alert-danger">
+        <strong>Please correct the following errors:</strong>
+        <ul>
+            @foreach (var key in ViewData.ModelState.Keys)
+            {
+                foreach (var error in ViewData.ModelState[key].Errors)
+                {
+                    <li>@(string.IsNullOrEmpty(key) ? "" : $"Field: {key} - " )Error: @error.ErrorMessage</li>
+                }
+            }
+        </ul>
+    </div>
+}
+
 <form method="post" asp-action="Add">
     <div class="mt-3">
         <div class="mb-3">
@@ -20,11 +36,16 @@
             <input type="number" class="form-control" asp-for="Year" />
             <span asp-validation-for="Year" class="text-danger"></span>
         </div>
+        
+        <div class="mb-3">
+            <label asp-for="Category" class="form-label"></label>
+            <input type="text" class="form-control" asp-for="Category" />
+            <span asp-validation-for="Category" class="text-danger"></span>
+        </div>
 
         <div class="mb-3">
             <label asp-for="Awardable_ID" class="form-label">Attributed To (Optional)</label>
             <select asp-for="Awardable_ID" asp-items="Model.Awardables" class="form-control">
-                <option value="">None (General Award)</option>
             </select>
             <span asp-validation-for="Awardable_ID" class="text-danger"></span>
         </div>

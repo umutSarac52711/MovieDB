@@ -1,0 +1,41 @@
+@model MovieDB.Models.Entities.ProductionCompany
+
+@{
+    ViewBag.Title = "Delete Production Company";
+    Layout = "_Layout";
+}
+
+<h2>Delete Production Company</h2>
+
+<h3>Are you sure you want to delete "@Model.Name"?</h3>
+<p>This action cannot be undone.</p>
+
+<div>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            Name
+        </dt>
+        <dd class="col-sm-10">
+            @Model.Name
+        </dd>
+        <dt class="col-sm-2">
+            Country
+        </dt>
+        <dd class="col-sm-10">
+            @(Model.Country ?? "N/A")
+        </dd>
+        <dt class="col-sm-2">
+            Founded Year
+        </dt>
+        <dd class="col-sm-10">
+            @(Model.Founded_Year.HasValue ? Model.Founded_Year.Value.ToString() : "N/A")
+        </dd>
+    </dl>
+
+    <form asp-action="Delete" method="post">
+        <input type="hidden" asp-for="Company_ID" />
+        <button type="submit" class="btn btn-danger">Delete</button> |
+        <a asp-action="List" class="btn btn-secondary">Cancel</a>
+    </form>
+</div>

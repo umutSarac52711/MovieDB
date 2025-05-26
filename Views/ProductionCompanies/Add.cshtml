@@ -1,0 +1,37 @@
+@model ProductionCompanyViewModel
+
+@{
+    ViewBag.Title = "Add Production Company"; 
+    Layout = "_Layout";
+}
+
+<h2>Add Production Company</h2>
+
+<form method="post" asp-action="Add">
+    <div asp-validation-summary="All" class="text-danger"></div> @* Changed to All to see all errors *@
+    <div class="mt-3">
+        <div class="mb-3">
+            <label asp-for="Name" class="form-label">Company Name</label>
+            <input type="text" class="form-control" asp-for="Name" />
+            <span asp-validation-for="Name" class="text-danger"></span>
+        </div>
+    
+        <div class="mb-3">
+            <label asp-for="Country" class="form-label">Country</label>
+            <input type="text" class="form-control" asp-for="Country" />
+            <span asp-validation-for="Country" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="Founded_Year" class="form-label">Founded Year</label>
+            <input type="number" class="form-control" asp-for="Founded_Year" />
+            <span asp-validation-for="Founded_Year" class="text-danger"></span>
+        </div>
+        
+        <button type="submit" class="btn btn-primary mt-3">Add Company</button>
+    </div>
+</form>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

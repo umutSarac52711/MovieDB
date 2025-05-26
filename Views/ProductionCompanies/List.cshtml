@@ -1,0 +1,46 @@
+@model List<MovieDB.Models.Entities.ProductionCompany>
+
+@{
+    ViewBag.Title = "List Production Companies";
+    Layout = "_Layout";
+}
+
+<h2>List Production Companies</h2>
+
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success">
+        @TempData["SuccessMessage"]
+    </div>
+}
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Country</th>
+            <th>Founded Year</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var company in Model)
+        {
+            <tr>
+                <td>@company.Name</td>
+                <td>@company.Country</td>
+                <td>@(company.Founded_Year.HasValue ? company.Founded_Year.Value.ToString() : "N/A")</td>
+                <td>
+                    <a href="@Url.Action("Edit", "ProductionCompanies", new { id = company.Company_ID })" class="btn btn-secondary btn-sm">Edit</a>
+                    
+                    <!-- Delete Confirmation: Link to a GET Delete action that shows a confirmation view -->
+                    <a href="@Url.Action("Delete", "ProductionCompanies", new { id = company.Company_ID })" class="btn btn-danger btn-sm">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<a href="@Url.Action("Add", "ProductionCompanies")" class="btn btn-primary">Add New Production Company</a>
+
+<hr />

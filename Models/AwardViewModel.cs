@@ -1,27 +1,34 @@
 using Microsoft.AspNetCore.Mvc.Rendering;
-using MovieDB.Models.Entities; // Assuming Awardable entity is here
+// using MovieDB.Models.Entities; // This using is not strictly needed here
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace MovieDB.Models
 {
-    public class AwardViewModel // Renamed from ActorViewModel
+    public class AwardViewModel
     {
-        public int Award_ID { get; set; } // Changed from Awardable_ID
+        // Award_ID is set by the database on creation, or used to identify an existing award for editing.
+        // It's not 'required' from the user when adding a new award.
+        public int Award_ID { get; set; }
 
-        [Required]
-        public string Name { get; set; }
+        [Required(ErrorMessage = "The Award Name field is required.")]
+        public string Name { get; set; } // C# 'required' removed, [Required] attribute handles validation.
 
-        [Required]
-        [Range(1900, 2100)] // Example range for year
-        public int Year { get; set; }
+        [Required(ErrorMessage = "The Year field is required.")]
+        [Range(1900, 2100, ErrorMessage = "Year must be between 1900 and 2100.")]
+        public int Year { get; set; } // C# 'required' removed, [Required] attribute handles validation.
+        
+        [Required(ErrorMessage = "The Category field is required.")]
+        [StringLength(255, ErrorMessage = "Category cannot exceed 255 characters.")]
+        public string Category { get; set; }
+        
+        public int? Awardable_ID { get; set; } // This is the foreign key, nullable.
 
-        public int? Awardable_ID { get; set; } // To link to an Awardable entity, nullable
+        // For the dropdown list in views. Initialize to prevent null issues.
+        public List<SelectListItem> Awardables { get; set; } = new List<SelectListItem>();
 
-        // For the dropdown list in views
-        public List<SelectListItem> Awardables { get; set; }
-
-        // To capture the selected Awardable's name for display or other purposes if needed
-        public string AwardableName { get; set; }
+        // To capture/display the selected Awardable's name. Make nullable.
+        public string? AwardableName { get; set; }
     }
 }
+
