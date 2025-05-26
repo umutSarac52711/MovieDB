@@ -17,7 +17,7 @@ public class Award
 
     public int Award_Year { get; set; }
 
-    public int Awardable_ID { get; set; } // FK to Awardable.Awardable_ID
+    public int? Awardable_ID { get; set; } // FK to Awardable.Awardable_ID
 
     // Navigation Property
     [ForeignKey("Awardable_ID")]

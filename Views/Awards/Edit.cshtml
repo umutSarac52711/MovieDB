@@ -1,0 +1,42 @@
+@model MovieDB.Models.AwardViewModel
+
+@{
+    ViewBag.Title = "Edit Award";
+    Layout = "_Layout";
+}
+
+<h2>Edit Award: @Model.Name (@Model.Year)</h2>
+
+<form method="post" asp-action="Edit">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <input type="hidden" asp-for="Award_ID" />
+
+    <div class="mt-3">
+        <div class="mb-3">
+            <label asp-for="Name" class="form-label"></label>
+            <input asp-for="Name" class="form-control" />
+            <span asp-validation-for="Name" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="Year" class="form-label"></label>
+            <input asp-for="Year" type="number" class="form-control" />
+            <span asp-validation-for="Year" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="Awardable_ID" class="form-label">Attributed To (Optional)</label>
+            <select asp-for="Awardable_ID" asp-items="Model.Awardables" class="form-control">
+                 <option value="">None (General Award)</option>
+            </select>
+            <span asp-validation-for="Awardable_ID" class="text-danger"></span>
+        </div>
+
+        <button type="submit" class="btn btn-primary mt-3">Save Changes</button>
+        <a asp-action="List" class="btn btn-secondary mt-3">Cancel</a>
+    </div>
+</form>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
