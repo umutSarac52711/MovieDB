@@ -40,6 +40,8 @@ public class MovieDbContext : DbContext
             .HasForeignKey<Director>(d => d.Awardable_ID);
 
         // Composite Key for MovieGenre
+        //Movie can have more than one genre,
+        //and a genre can be associated with multiple movies
         modelBuilder.Entity<MovieGenre>()
             .HasKey(mg => new { mg.Movie_ID, mg.Genre });
 

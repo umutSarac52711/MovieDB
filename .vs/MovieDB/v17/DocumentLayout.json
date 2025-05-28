@@ -1,0 +1,411 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\yaman\\source\\repos\\MovieDB\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{32B99B20-2D62-4859-82DE-8C61F266493E}|MovieDB.csproj|c:\\users\\yaman\\source\\repos\\moviedb\\controllers\\reviewcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{32B99B20-2D62-4859-82DE-8C61F266493E}|MovieDB.csproj|solutionrelative:controllers\\reviewcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{32B99B20-2D62-4859-82DE-8C61F266493E}|MovieDB.csproj|c:\\users\\yaman\\source\\repos\\moviedb\\views\\home\\privacy.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{32B99B20-2D62-4859-82DE-8C61F266493E}|MovieDB.csproj|solutionrelative:views\\home\\privacy.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{32B99B20-2D62-4859-82DE-8C61F266493E}|MovieDB.csproj|c:\\users\\yaman\\source\\repos\\moviedb\\models\\reviewviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{32B99B20-2D62-4859-82DE-8C61F266493E}|MovieDB.csproj|solutionrelative:models\\reviewviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{32B99B20-2D62-4859-82DE-8C61F266493E}|MovieDB.csproj|c:\\users\\yaman\\source\\repos\\moviedb\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "RelativeMoniker": "D:0:0:{32B99B20-2D62-4859-82DE-8C61F266493E}|MovieDB.csproj|solutionrelative:appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\yaman\\AppData\\Local\\SourceServer\\14e259210f2b0dc6dc710aa168b1c0632c28e664184fd27712c6b79e78057695\\Program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\yaman\\AppData\\Local\\SourceServer\\5f76ae72244c11b635f22dc0ad7fbb8cb068983e6cbe2fd75acea468e0b93775\\Data\\MovieDbContext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{32B99B20-2D62-4859-82DE-8C61F266493E}|MovieDB.csproj|c:\\users\\yaman\\source\\repos\\moviedb\\models\\entities\\director.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{32B99B20-2D62-4859-82DE-8C61F266493E}|MovieDB.csproj|solutionrelative:models\\entities\\director.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{32B99B20-2D62-4859-82DE-8C61F266493E}|MovieDB.csproj|c:\\users\\yaman\\source\\repos\\moviedb\\models\\entities\\actor.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{32B99B20-2D62-4859-82DE-8C61F266493E}|MovieDB.csproj|solutionrelative:models\\entities\\actor.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{32B99B20-2D62-4859-82DE-8C61F266493E}|MovieDB.csproj|c:\\users\\yaman\\source\\repos\\moviedb\\models\\productioncompanyviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{32B99B20-2D62-4859-82DE-8C61F266493E}|MovieDB.csproj|solutionrelative:models\\productioncompanyviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{32B99B20-2D62-4859-82DE-8C61F266493E}|MovieDB.csproj|c:\\users\\yaman\\source\\repos\\moviedb\\views\\movies\\list.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{32B99B20-2D62-4859-82DE-8C61F266493E}|MovieDB.csproj|solutionrelative:views\\movies\\list.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{32B99B20-2D62-4859-82DE-8C61F266493E}|MovieDB.csproj|c:\\users\\yaman\\source\\repos\\moviedb\\views\\movies\\add.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{32B99B20-2D62-4859-82DE-8C61F266493E}|MovieDB.csproj|solutionrelative:views\\movies\\add.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{32B99B20-2D62-4859-82DE-8C61F266493E}|MovieDB.csproj|c:\\users\\yaman\\source\\repos\\moviedb\\views\\home\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{32B99B20-2D62-4859-82DE-8C61F266493E}|MovieDB.csproj|solutionrelative:views\\home\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{32B99B20-2D62-4859-82DE-8C61F266493E}|MovieDB.csproj|c:\\users\\yaman\\source\\repos\\moviedb\\models\\movieviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{32B99B20-2D62-4859-82DE-8C61F266493E}|MovieDB.csproj|solutionrelative:models\\movieviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{32B99B20-2D62-4859-82DE-8C61F266493E}|MovieDB.csproj|c:\\users\\yaman\\source\\repos\\moviedb\\views\\directors\\add.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{32B99B20-2D62-4859-82DE-8C61F266493E}|MovieDB.csproj|solutionrelative:views\\directors\\add.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{32B99B20-2D62-4859-82DE-8C61F266493E}|MovieDB.csproj|c:\\users\\yaman\\source\\repos\\moviedb\\views\\shared\\_layout.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{32B99B20-2D62-4859-82DE-8C61F266493E}|MovieDB.csproj|solutionrelative:views\\shared\\_layout.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{32B99B20-2D62-4859-82DE-8C61F266493E}|MovieDB.csproj|c:\\users\\yaman\\source\\repos\\moviedb\\views\\awards\\edit.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{32B99B20-2D62-4859-82DE-8C61F266493E}|MovieDB.csproj|solutionrelative:views\\awards\\edit.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{32B99B20-2D62-4859-82DE-8C61F266493E}|MovieDB.csproj|c:\\users\\yaman\\source\\repos\\moviedb\\models\\directorviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{32B99B20-2D62-4859-82DE-8C61F266493E}|MovieDB.csproj|solutionrelative:models\\directorviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{32B99B20-2D62-4859-82DE-8C61F266493E}|MovieDB.csproj|c:\\users\\yaman\\source\\repos\\moviedb\\models\\actorviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{32B99B20-2D62-4859-82DE-8C61F266493E}|MovieDB.csproj|solutionrelative:models\\actorviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{32B99B20-2D62-4859-82DE-8C61F266493E}|MovieDB.csproj|c:\\users\\yaman\\source\\repos\\moviedb\\views\\actors\\add.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{32B99B20-2D62-4859-82DE-8C61F266493E}|MovieDB.csproj|solutionrelative:views\\actors\\add.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{32B99B20-2D62-4859-82DE-8C61F266493E}|MovieDB.csproj|c:\\users\\yaman\\source\\repos\\moviedb\\controllers\\directorscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{32B99B20-2D62-4859-82DE-8C61F266493E}|MovieDB.csproj|solutionrelative:controllers\\directorscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{32B99B20-2D62-4859-82DE-8C61F266493E}|MovieDB.csproj|c:\\users\\yaman\\source\\repos\\moviedb\\controllers\\moviescontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{32B99B20-2D62-4859-82DE-8C61F266493E}|MovieDB.csproj|solutionrelative:controllers\\moviescontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{32B99B20-2D62-4859-82DE-8C61F266493E}|MovieDB.csproj|c:\\users\\yaman\\source\\repos\\moviedb\\data\\moviedbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{32B99B20-2D62-4859-82DE-8C61F266493E}|MovieDB.csproj|solutionrelative:data\\moviedbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{32B99B20-2D62-4859-82DE-8C61F266493E}|MovieDB.csproj|c:\\users\\yaman\\source\\repos\\moviedb\\controllers\\actorscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{32B99B20-2D62-4859-82DE-8C61F266493E}|MovieDB.csproj|solutionrelative:controllers\\actorscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{32B99B20-2D62-4859-82DE-8C61F266493E}|MovieDB.csproj|c:\\users\\yaman\\source\\repos\\moviedb\\controllers\\awardscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{32B99B20-2D62-4859-82DE-8C61F266493E}|MovieDB.csproj|solutionrelative:controllers\\awardscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 1,
+          "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{3ae79031-e1bc-11d0-8f78-00a0c9110057}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "ReviewController.cs",
+              "DocumentMoniker": "C:\\Users\\yaman\\source\\repos\\MovieDB\\Controllers\\ReviewController.cs",
+              "RelativeDocumentMoniker": "Controllers\\ReviewController.cs",
+              "ToolTip": "C:\\Users\\yaman\\source\\repos\\MovieDB\\Controllers\\ReviewController.cs",
+              "RelativeToolTip": "Controllers\\ReviewController.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAAAaAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-27T13:49:51.282Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "ReviewViewModel.cs",
+              "DocumentMoniker": "C:\\Users\\yaman\\source\\repos\\MovieDB\\Models\\ReviewViewModel.cs",
+              "RelativeDocumentMoniker": "Models\\ReviewViewModel.cs",
+              "ToolTip": "C:\\Users\\yaman\\source\\repos\\MovieDB\\Models\\ReviewViewModel.cs",
+              "RelativeToolTip": "Models\\ReviewViewModel.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAYAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-27T12:58:10.701Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "Privacy.cshtml",
+              "DocumentMoniker": "C:\\Users\\yaman\\source\\repos\\MovieDB\\Views\\Home\\Privacy.cshtml",
+              "RelativeDocumentMoniker": "Views\\Home\\Privacy.cshtml",
+              "ToolTip": "C:\\Users\\yaman\\source\\repos\\MovieDB\\Views\\Home\\Privacy.cshtml",
+              "RelativeToolTip": "Views\\Home\\Privacy.cshtml",
+              "ViewState": "AgIAAAUAAAAAAAAAAAAAAAUAAABxAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-05-27T12:41:24.649Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "MovieDbContext.cs",
+              "DocumentMoniker": "C:\\Users\\yaman\\AppData\\Local\\SourceServer\\5f76ae72244c11b635f22dc0ad7fbb8cb068983e6cbe2fd75acea468e0b93775\\Data\\MovieDbContext.cs",
+              "RelativeDocumentMoniker": "..\\..\\..\\AppData\\Local\\SourceServer\\5f76ae72244c11b635f22dc0ad7fbb8cb068983e6cbe2fd75acea468e0b93775\\Data\\MovieDbContext.cs",
+              "ToolTip": "C:\\Users\\yaman\\AppData\\Local\\SourceServer\\5f76ae72244c11b635f22dc0ad7fbb8cb068983e6cbe2fd75acea468e0b93775\\Data\\MovieDbContext.cs",
+              "RelativeToolTip": "..\\..\\..\\AppData\\Local\\SourceServer\\5f76ae72244c11b635f22dc0ad7fbb8cb068983e6cbe2fd75acea468e0b93775\\Data\\MovieDbContext.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAGMAAAAqAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-27T13:00:51.508Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "Program.cs",
+              "DocumentMoniker": "C:\\Users\\yaman\\AppData\\Local\\SourceServer\\14e259210f2b0dc6dc710aa168b1c0632c28e664184fd27712c6b79e78057695\\Program.cs",
+              "RelativeDocumentMoniker": "..\\..\\..\\AppData\\Local\\SourceServer\\14e259210f2b0dc6dc710aa168b1c0632c28e664184fd27712c6b79e78057695\\Program.cs",
+              "ToolTip": "C:\\Users\\yaman\\AppData\\Local\\SourceServer\\14e259210f2b0dc6dc710aa168b1c0632c28e664184fd27712c6b79e78057695\\Program.cs",
+              "RelativeToolTip": "..\\..\\..\\AppData\\Local\\SourceServer\\14e259210f2b0dc6dc710aa168b1c0632c28e664184fd27712c6b79e78057695\\Program.cs",
+              "ViewState": "AgIAAAkAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-27T13:24:35.06Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "Director.cs",
+              "DocumentMoniker": "C:\\Users\\yaman\\source\\repos\\MovieDB\\Models\\Entities\\Director.cs",
+              "RelativeDocumentMoniker": "Models\\Entities\\Director.cs",
+              "ToolTip": "C:\\Users\\yaman\\source\\repos\\MovieDB\\Models\\Entities\\Director.cs",
+              "RelativeToolTip": "Models\\Entities\\Director.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-27T13:16:06.448Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "Actor.cs",
+              "DocumentMoniker": "C:\\Users\\yaman\\source\\repos\\MovieDB\\Models\\Entities\\Actor.cs",
+              "RelativeDocumentMoniker": "Models\\Entities\\Actor.cs",
+              "ToolTip": "C:\\Users\\yaman\\source\\repos\\MovieDB\\Models\\Entities\\Actor.cs",
+              "RelativeToolTip": "Models\\Entities\\Actor.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-27T13:16:01.251Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "ProductionCompanyViewModel.cs",
+              "DocumentMoniker": "C:\\Users\\yaman\\source\\repos\\MovieDB\\Models\\ProductionCompanyViewModel.cs",
+              "RelativeDocumentMoniker": "Models\\ProductionCompanyViewModel.cs",
+              "ToolTip": "C:\\Users\\yaman\\source\\repos\\MovieDB\\Models\\ProductionCompanyViewModel.cs",
+              "RelativeToolTip": "Models\\ProductionCompanyViewModel.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-27T11:24:16.111Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "List.cshtml",
+              "DocumentMoniker": "C:\\Users\\yaman\\source\\repos\\MovieDB\\Views\\Movies\\List.cshtml",
+              "RelativeDocumentMoniker": "Views\\Movies\\List.cshtml",
+              "ToolTip": "C:\\Users\\yaman\\source\\repos\\MovieDB\\Views\\Movies\\List.cshtml",
+              "RelativeToolTip": "Views\\Movies\\List.cshtml",
+              "ViewState": "AgIAABUAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-05-27T12:38:34.209Z"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{1c64b9c2-e352-428e-a56d-0ace190b99a6}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "appsettings.json",
+              "DocumentMoniker": "C:\\Users\\yaman\\source\\repos\\MovieDB\\appsettings.json",
+              "RelativeDocumentMoniker": "appsettings.json",
+              "ToolTip": "C:\\Users\\yaman\\source\\repos\\MovieDB\\appsettings.json",
+              "RelativeToolTip": "appsettings.json",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
+              "WhenOpened": "2025-05-27T13:38:58.129Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 11,
+              "Title": "Index.cshtml",
+              "DocumentMoniker": "C:\\Users\\yaman\\source\\repos\\MovieDB\\Views\\Home\\Index.cshtml",
+              "RelativeDocumentMoniker": "Views\\Home\\Index.cshtml",
+              "ToolTip": "C:\\Users\\yaman\\source\\repos\\MovieDB\\Views\\Home\\Index.cshtml",
+              "RelativeToolTip": "Views\\Home\\Index.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-05-27T12:37:39.169Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
+              "Title": "Add.cshtml",
+              "DocumentMoniker": "C:\\Users\\yaman\\source\\repos\\MovieDB\\Views\\Movies\\Add.cshtml",
+              "RelativeDocumentMoniker": "Views\\Movies\\Add.cshtml",
+              "ToolTip": "C:\\Users\\yaman\\source\\repos\\MovieDB\\Views\\Movies\\Add.cshtml",
+              "RelativeToolTip": "Views\\Movies\\Add.cshtml",
+              "ViewState": "AgIAABsAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-05-27T12:26:07.446Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 13,
+              "Title": "Add.cshtml",
+              "DocumentMoniker": "C:\\Users\\yaman\\source\\repos\\MovieDB\\Views\\Directors\\Add.cshtml",
+              "RelativeDocumentMoniker": "Views\\Directors\\Add.cshtml",
+              "ToolTip": "C:\\Users\\yaman\\source\\repos\\MovieDB\\Views\\Directors\\Add.cshtml",
+              "RelativeToolTip": "Views\\Directors\\Add.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-05-27T12:24:41.682Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 12,
+              "Title": "MovieViewModel.cs",
+              "DocumentMoniker": "C:\\Users\\yaman\\source\\repos\\MovieDB\\Models\\MovieViewModel.cs",
+              "RelativeDocumentMoniker": "Models\\MovieViewModel.cs",
+              "ToolTip": "C:\\Users\\yaman\\source\\repos\\MovieDB\\Models\\MovieViewModel.cs",
+              "RelativeToolTip": "Models\\MovieViewModel.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-27T11:24:12.445Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 14,
+              "Title": "_Layout.cshtml",
+              "DocumentMoniker": "C:\\Users\\yaman\\source\\repos\\MovieDB\\Views\\Shared\\_Layout.cshtml",
+              "RelativeDocumentMoniker": "Views\\Shared\\_Layout.cshtml",
+              "ToolTip": "C:\\Users\\yaman\\source\\repos\\MovieDB\\Views\\Shared\\_Layout.cshtml",
+              "RelativeToolTip": "Views\\Shared\\_Layout.cshtml",
+              "ViewState": "AgIAAA8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-05-27T11:44:27.193Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 15,
+              "Title": "Edit.cshtml",
+              "DocumentMoniker": "C:\\Users\\yaman\\source\\repos\\MovieDB\\Views\\Awards\\Edit.cshtml",
+              "RelativeDocumentMoniker": "Views\\Awards\\Edit.cshtml",
+              "ToolTip": "C:\\Users\\yaman\\source\\repos\\MovieDB\\Views\\Awards\\Edit.cshtml",
+              "RelativeToolTip": "Views\\Awards\\Edit.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-05-27T11:30:55.245Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 16,
+              "Title": "DirectorViewModel.cs",
+              "DocumentMoniker": "C:\\Users\\yaman\\source\\repos\\MovieDB\\Models\\DirectorViewModel.cs",
+              "RelativeDocumentMoniker": "Models\\DirectorViewModel.cs",
+              "ToolTip": "C:\\Users\\yaman\\source\\repos\\MovieDB\\Models\\DirectorViewModel.cs",
+              "RelativeToolTip": "Models\\DirectorViewModel.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-27T11:24:08.544Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 19,
+              "Title": "DirectorsController.cs",
+              "DocumentMoniker": "C:\\Users\\yaman\\source\\repos\\MovieDB\\Controllers\\DirectorsController.cs",
+              "RelativeDocumentMoniker": "Controllers\\DirectorsController.cs",
+              "ToolTip": "C:\\Users\\yaman\\source\\repos\\MovieDB\\Controllers\\DirectorsController.cs",
+              "RelativeToolTip": "Controllers\\DirectorsController.cs",
+              "ViewState": "AgIAAJMAAAAAAAAAAAAIwKwAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-27T11:12:07.198Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 20,
+              "Title": "MoviesController.cs",
+              "DocumentMoniker": "C:\\Users\\yaman\\source\\repos\\MovieDB\\Controllers\\MoviesController.cs",
+              "RelativeDocumentMoniker": "Controllers\\MoviesController.cs",
+              "ToolTip": "C:\\Users\\yaman\\source\\repos\\MovieDB\\Controllers\\MoviesController.cs",
+              "RelativeToolTip": "Controllers\\MoviesController.cs",
+              "ViewState": "AgIAABcAAAAAAAAAAAAgwBoAAAAsAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-27T11:05:43.56Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 21,
+              "Title": "MovieDbContext.cs",
+              "DocumentMoniker": "C:\\Users\\yaman\\source\\repos\\MovieDB\\Data\\MovieDbContext.cs",
+              "RelativeDocumentMoniker": "Data\\MovieDbContext.cs",
+              "ToolTip": "C:\\Users\\yaman\\source\\repos\\MovieDB\\Data\\MovieDbContext.cs",
+              "RelativeToolTip": "Data\\MovieDbContext.cs",
+              "ViewState": "AgIAAA8AAAAAAAAAAAAiwBQAAAACAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-27T10:29:46.011Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 22,
+              "Title": "ActorsController.cs",
+              "DocumentMoniker": "C:\\Users\\yaman\\source\\repos\\MovieDB\\Controllers\\ActorsController.cs",
+              "RelativeDocumentMoniker": "Controllers\\ActorsController.cs",
+              "ToolTip": "C:\\Users\\yaman\\source\\repos\\MovieDB\\Controllers\\ActorsController.cs",
+              "RelativeToolTip": "Controllers\\ActorsController.cs",
+              "ViewState": "AgIAAGgAAAAAAAAAAAAswEMAAAANAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-26T19:47:52.967Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 17,
+              "Title": "ActorViewModel.cs",
+              "DocumentMoniker": "C:\\Users\\yaman\\source\\repos\\MovieDB\\Models\\ActorViewModel.cs",
+              "RelativeDocumentMoniker": "Models\\ActorViewModel.cs",
+              "ToolTip": "C:\\Users\\yaman\\source\\repos\\MovieDB\\Models\\ActorViewModel.cs",
+              "RelativeToolTip": "Models\\ActorViewModel.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-26T19:47:48.687Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 18,
+              "Title": "Add.cshtml",
+              "DocumentMoniker": "C:\\Users\\yaman\\source\\repos\\MovieDB\\Views\\Actors\\Add.cshtml",
+              "RelativeDocumentMoniker": "Views\\Actors\\Add.cshtml",
+              "ToolTip": "C:\\Users\\yaman\\source\\repos\\MovieDB\\Views\\Actors\\Add.cshtml",
+              "RelativeToolTip": "Views\\Actors\\Add.cshtml",
+              "ViewState": "AgIAAAMAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-05-26T19:47:38.636Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 23,
+              "Title": "AwardsController.cs",
+              "DocumentMoniker": "C:\\Users\\yaman\\source\\repos\\MovieDB\\Controllers\\AwardsController.cs",
+              "RelativeDocumentMoniker": "Controllers\\AwardsController.cs",
+              "ToolTip": "C:\\Users\\yaman\\source\\repos\\MovieDB\\Controllers\\AwardsController.cs",
+              "RelativeToolTip": "Controllers\\AwardsController.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-26T19:43:02.437Z"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
