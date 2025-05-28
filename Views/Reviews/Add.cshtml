@@ -1,0 +1,45 @@
+@model MovieDB.Models.ReviewViewModel
+
+@{
+    ViewBag.Title = "Add Review"; 
+    Layout = "_Layout";
+}
+
+<h2>Add Review</h2>
+
+<form method="post" asp-action="Add">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <div class="mt-3">
+        <div class="mb-3">
+            <label asp-for="Movie_ID" class="form-label"></label>
+            <select asp-for="Movie_ID" class="form-control" asp-items="ViewBag.Movies">
+                <option value="">-- Select Movie --</option>
+            </select>
+            <span asp-validation-for="Movie_ID" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="Reviewer" class="form-label"></label>
+            <input type="text" class="form-control" asp-for="Reviewer" />
+            <span asp-validation-for="Reviewer" class="text-danger"></span>
+        </div>
+    
+        <div class="mb-3">
+            <label asp-for="Rating" class="form-label"></label>
+            <input type="number" class="form-control" asp-for="Rating" min="1" max="10" />
+            <span asp-validation-for="Rating" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="Comment_Text" class="form-label"></label>
+            <textarea class="form-control" asp-for="Comment_Text" rows="3"></textarea>
+            <span asp-validation-for="Comment_Text" class="text-danger"></span>
+        </div>
+
+        <button type="submit" class="btn btn-primary mt-3">Add Review</button>
+    </div>
+</form>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

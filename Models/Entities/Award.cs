@@ -10,14 +10,14 @@ public class Award
 
     [Required]
     [StringLength(255)]
-    public string Name { get; set; } // e.g., "Oscar", "Golden Globe"
+    public required string Name { get; set; } // e.g., "Oscar", "Golden Globe"
 
     [StringLength(255)]
-    public string Category { get; set; } // e.g., "Best Picture", "Best Actor"
+    public required string Category { get; set; } // e.g., "Best Picture", "Best Actor"
 
-    public int Award_Year { get; set; }
+    public required int Award_Year { get; set; }
 
-    public int? Awardable_ID { get; set; } // FK to Awardable.Awardable_ID
+    public required int? Awardable_ID { get; set; } // FK to Awardable.Awardable_ID
 
     // Navigation Property
     [ForeignKey("Awardable_ID")]

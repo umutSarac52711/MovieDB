@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace MovieDB.Models
 {
-    public class ProductionCompanyViewModel // Renamed from ActorViewModel
+    public class ProductionCompanyViewModel
     {
         public int Company_ID { get; set; } // Primary Key
 

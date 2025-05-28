@@ -6,3 +6,81 @@
     <h1 class="display-4">Welcome</h1>
     <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
 </div>
+
+<div class="container mt-5">
+    <h2 class="text-center">Movie per Genre</h2>
+    <canvas id="departmentChart" width="400" height="200"></canvas>
+
+    <h2 class="text-center mt-5">Movie Revenue vs Budget</h2>
+    <canvas id="listenHoursChart" width="400" height="200"></canvas>
+
+    <h2 class="text-center mt-5">Number of Awards by Candidate Type</h2>
+    <canvas id="employeeByDateChart" width="400" height="200"></canvas>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+    var ctx1 = document.getElementById('departmentChart').getContext('2d');
+    var genreChart = new Chart(ctx1, {
+        type: 'bar',
+        data: {
+            labels: ['Action', 'Drama', 'Comedy', 'Sci-Fi'],
+            datasets: [{
+                label: 'Number of Movies',
+                data: [12, 9, 14, 7],
+                backgroundColor: ['#007bff', '#dc3545', '#ffc107', '#28a745'],
+                borderColor: ['#0056b3', '#a71d2a', '#cc9a06', '#1c7c34'],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            scales: { y: { beginAtZero: true } }
+        }
+    });
+
+    var ctx2 = document.getElementById('listenHoursChart').getContext('2d');
+    var revenueBudgetChart = new Chart(ctx2, {
+        type: 'scatter',
+        data: {
+            datasets: [{
+                label: 'Movie Revenue vs Budget',
+                data: [
+                    { x: 50, y: 200 },
+                    { x: 100, y: 300 },
+                    { x: 80, y: 90 },
+                    { x: 40, y: 120 }
+                ],
+                backgroundColor: 'rgba(54, 162, 235, 0.6)',
+                borderColor: 'rgba(54, 162, 235, 1)'
+            }]
+        },
+        options: {
+            responsive: true,
+            scales: {
+                x: { title: { display: true, text: 'Budget (in Millions)' }, beginAtZero: true },
+                y: { title: { display: true, text: 'Revenue (in Millions)' }, beginAtZero: true }
+            }
+        }
+    });
+
+    var ctx3 = document.getElementById('employeeByDateChart').getContext('2d');
+    var awardsChart = new Chart(ctx3, {
+        type: 'bar',
+        data: {
+            labels: ['Movies', 'Actors', 'Directors'],
+            datasets: [{
+                label: 'Award Count',
+                data: [15, 10, 8],
+                backgroundColor: ['#6f42c1', '#e83e8c', '#17a2b8'],
+                borderColor: ['#4e2787', '#a32760', '#0f6674'],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            scales: { y: { beginAtZero: true } }
+        }
+    });
+</script>

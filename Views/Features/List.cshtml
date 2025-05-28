@@ -1,0 +1,103 @@
+@model List<MovieDB.Models.FeaturesViewModel>
+
+@{
+    ViewBag.Title = "Feature Relationships";
+    Layout = "_Layout";
+}
+
+<h2>@ViewBag.Title</h2>
+
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success">@TempData["SuccessMessage"]</div>
+}
+@if (TempData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger">@TempData["ErrorMessage"]</div>
+}
+
+<p>
+    <a asp-action="Add" class="btn btn-primary">Add New Feature Relationship</a>
+</p>
+
+@if (!Model.Any())
+{
+    <p>No feature relationships found.</p>
+}
+else
+{
+    <div class="list-group">
+        @foreach (var item in Model)
+        {
+            <div class="list-group-item list-group-item-action flex-column align-items-start mb-2">
+                <div class="d-flex w-100 justify-content-between">
+                    <h5 class="mb-1">@item.MovieTitle</h5>
+                    <div>
+                        <a asp-action="Edit" asp-route-movieId="@item.Movie_ID" asp-route-directorId="@item.Director_ID" asp-route-actorId="@item.Actor_ID" class="btn btn-sm btn-outline-secondary me-1">Edit</a>
+                        <button type="button" class="btn btn-sm btn-outline-danger delete-feature-button"
+                                data-bs-toggle="modal" data-bs-target="#deleteFeatureModal"
+                                data-movie-id="@item.Movie_ID" data-director-id="@item.Director_ID" data-actor-id="@item.Actor_ID"
+                                data-feature-details="'@item.MovieTitle' - '@item.DirectorName' - '@item.ActorName'">
+                            Delete
+                        </button>
+                    </div>
+                </div>
+                <p class="mb-1">Director: @item.DirectorName</p>
+                <p class="mb-1">Actor: @item.ActorName</p>
+            </div>
+        }
+    </div>
+}
+
+<!-- Delete Confirmation Modal -->
+<div class="modal fade" id="deleteFeatureModal" tabindex="-1" aria-labelledby="deleteFeatureModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form asp-controller="Features" asp-action="Delete" method="post">
+                @Html.AntiForgeryToken()
+                <div class="modal-header">
+                    <h5 class="modal-title" id="deleteFeatureModalLabel">Confirm Delete</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p>Are you sure you want to delete the feature: <strong id="featureDetailsToDelete"></strong>?</p>
+                    <input type="hidden" name="movieId" id="movieFeatureIdToDelete" />
+                    <input type="hidden" name="directorId" id="directorFeatureIdToDelete" />
+                    <input type="hidden" name="actorId" id="actorFeatureIdToDelete" />
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-danger">Delete</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var deleteFeatureModal = document.getElementById('deleteFeatureModal');
+            if (deleteFeatureModal) {
+                deleteFeatureModal.addEventListener('show.bs.modal', function (event) {
+                    var button = event.relatedTarget;
+                    var movieId = button.getAttribute('data-movie-id');
+                    var directorId = button.getAttribute('data-director-id');
+                    var actorId = button.getAttribute('data-actor-id');
+                    var featureDetails = button.getAttribute('data-feature-details');
+
+                    var modalMovieIdInput = deleteFeatureModal.querySelector('#movieFeatureIdToDelete');
+                    var modalDirectorIdInput = deleteFeatureModal.querySelector('#directorFeatureIdToDelete');
+                    var modalActorIdInput = deleteFeatureModal.querySelector('#actorFeatureIdToDelete');
+                    var modalFeatureDetailsSpan = deleteFeatureModal.querySelector('#featureDetailsToDelete');
+
+                    if (modalMovieIdInput) modalMovieIdInput.value = movieId;
+                    if (modalDirectorIdInput) modalDirectorIdInput.value = directorId;
+                    if (modalActorIdInput) modalActorIdInput.value = actorId;
+                    if (modalFeatureDetailsSpan) modalFeatureDetailsSpan.textContent = featureDetails || 'this feature';
+                });
+            }
+        });
+    </script>
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

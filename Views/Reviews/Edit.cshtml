@@ -1,0 +1,54 @@
+@model MovieDB.Models.ReviewViewModel
+
+@{
+    ViewBag.Title = "Edit Review";
+    Layout = "_Layout";
+}
+
+<h2>Edit Review</h2>
+
+<form method="post" asp-action="Edit">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <input type="hidden" asp-for="Review_ID" />
+    <input type="hidden" asp-for="Date_Posted" /> @* Preserve original post date *@
+
+    <div class="mt-3">
+        <div class="mb-3">
+            <label asp-for="Movie_ID" class="form-label"></label>
+            <select asp-for="Movie_ID" class="form-control" asp-items="ViewBag.Movies">
+                <option value="">-- Select Movie --</option>
+            </select>
+            <span asp-validation-for="Movie_ID" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="Reviewer" class="form-label"></label>
+            <input asp-for="Reviewer" class="form-control" />
+            <span asp-validation-for="Reviewer" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="Rating" class="form-label"></label>
+            <input asp-for="Rating" type="number" class="form-control" min="1" max="10" />
+            <span asp-validation-for="Rating" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="Comment_Text" class="form-label"></label>
+            <textarea asp-for="Comment_Text" class="form-control" rows="3"></textarea>
+            <span asp-validation-for="Comment_Text" class="text-danger"></span>
+        </div>
+        
+        <div class="mb-3">
+            <label asp-for="Date_Posted" class="form-label"></label>
+            <input asp-for="Date_Posted" class="form-control" readonly />
+        </div>
+
+        <button type="submit" class="btn btn-primary mt-3">Save Changes</button>
+        <a asp-action="List" class="btn btn-secondary mt-3">Cancel</a>
+    </div>
+</form>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

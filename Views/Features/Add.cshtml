@@ -1,0 +1,44 @@
+@model MovieDB.Models.FeaturesViewModel
+
+@{
+    ViewBag.Title = "Add Feature Relationship";
+    Layout = "_Layout";
+}
+
+<h2>@ViewBag.Title</h2>
+
+<form asp-action="Add" method="post">
+    @Html.AntiForgeryToken()
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+    <div class="mb-3">
+        <label asp-for="Movie_ID" class="form-label"></label>
+        <select asp-for="Movie_ID" class="form-control" asp-items="Model.Movies">
+            <option value="">-- Select Movie --</option>
+        </select>
+        <span asp-validation-for="Movie_ID" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Director_ID" class="form-label"></label>
+        <select asp-for="Director_ID" class="form-control" asp-items="Model.Directors">
+            <option value="">-- Select Director --</option>
+        </select>
+        <span asp-validation-for="Director_ID" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Actor_ID" class="form-label"></label>
+        <select asp-for="Actor_ID" class="form-control" asp-items="Model.Actors">
+            <option value="">-- Select Actor --</option>
+        </select>
+        <span asp-validation-for="Actor_ID" class="text-danger"></span>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Add Relationship</button>
+    <a asp-action="List" class="btn btn-secondary">Cancel</a>
+</form>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
