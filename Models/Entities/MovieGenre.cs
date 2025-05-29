@@ -5,14 +5,14 @@ namespace MovieDB.Models.Entities;
 
 public class MovieGenre
 {
-    // Composite Key will be defined in DbContext
-    public int Movie_ID { get; set; } // This will be Movie.Awardable_ID
-
-    [Required]
-    [StringLength(100)]
-    public string Genre { get; set; }
+    [Key, Column(Order = 0)]
+    public int Movie_ID { get; set; }
+    [Key, Column(Order = 1)]
+    public int Genre_ID { get; set; }
 
     // Navigation Properties
     [ForeignKey("Movie_ID")]
     public virtual Movie Movie { get; set; }
+    [ForeignKey("Genre_ID")]
+    public virtual Genre Genre { get; set; } 
 }   

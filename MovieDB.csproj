@@ -23,9 +23,18 @@
       <AdditionalFiles Include="Views\Actors\Add.cshtml" />
       <AdditionalFiles Include="Views\Actors\Edit.cshtml" />
       <AdditionalFiles Include="Views\Actors\List.cshtml" />
-      <AdditionalFiles Include="Views\ProductionCompanies\Add.cshtml" />
-      <AdditionalFiles Include="Views\ProductionCompanies\Edit.cshtml" />
-      <AdditionalFiles Include="Views\ProductionCompanies\List.cshtml" />
+      <AdditionalFiles Include="Views\Companies\Add.cshtml" />
+      <AdditionalFiles Include="Views\Companies\Edit.cshtml" />
+      <AdditionalFiles Include="Views\Companies\List.cshtml" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <_ContentIncludedByDefault Remove="Views\Features\Add.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\Features\Edit.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\Features\List.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\MovieActor\Add.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\MovieActor\Edit.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\MovieActor\List.cshtml" />
     </ItemGroup>
 
 </Project>

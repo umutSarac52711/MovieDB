@@ -1,59 +1,27 @@
 @model MovieDB.Models.AwardViewModel
 
 @{
-    ViewBag.Title = "Add Award"; 
-    Layout = "_Layout";
+    ViewData["Title"] = "Add New Award Nomination";
 }
 
-<h2>Add Award</h2>
+<h1>@ViewData["Title"]</h1>
 
-@if (!ViewData.ModelState.IsValid)
-{
-    <div class="alert alert-danger">
-        <strong>Please correct the following errors:</strong>
-        <ul>
-            @foreach (var key in ViewData.ModelState.Keys)
-            {
-                foreach (var error in ViewData.ModelState[key].Errors)
-                {
-                    <li>@(string.IsNullOrEmpty(key) ? "" : $"Field: {key} - " )Error: @error.ErrorMessage</li>
-                }
-            }
-        </ul>
+<hr />
+<div class="row">
+    <div class="col-md-6">
+        <form asp-action="Add" method="post">
+            <partial name="_AwardFOrm" model="Model" />
+            <div class="form-group mt-3">
+                <button type="submit" class="btn btn-success">Create Nomination</button>
+                <a asp-action="List" class="btn btn-secondary">Back to List</a>
+            </div>
+        </form>
     </div>
-}
-
-<form method="post" asp-action="Add">
-    <div class="mt-3">
-        <div class="mb-3">
-            <label asp-for="Name" class="form-label"></label>
-            <input type="text" class="form-control" asp-for="Name" />
-            <span asp-validation-for="Name" class="text-danger"></span>
-        </div>
-    
-        <div class="mb-3">
-            <label asp-for="Year" class="form-label"></label>
-            <input type="number" class="form-control" asp-for="Year" />
-            <span asp-validation-for="Year" class="text-danger"></span>
-        </div>
-        
-        <div class="mb-3">
-            <label asp-for="Category" class="form-label"></label>
-            <input type="text" class="form-control" asp-for="Category" />
-            <span asp-validation-for="Category" class="text-danger"></span>
-        </div>
-
-        <div class="mb-3">
-            <label asp-for="Awardable_ID" class="form-label">Attributed To (Optional)</label>
-            <select asp-for="Awardable_ID" asp-items="Model.Awardables" class="form-control">
-            </select>
-            <span asp-validation-for="Awardable_ID" class="text-danger"></span>
-        </div>
-
-        <button type="submit" class="btn btn-primary mt-3">Add Award</button>
-    </div>
-</form>
+</div>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    @* Add any client-side JS for dynamic dropdown logic here if desired *@
 }

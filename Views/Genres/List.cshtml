@@ -1,0 +1,46 @@
+@model List<MovieDB.Models.Entities.Genre>
+
+@{
+    ViewBag.Title = "List Genres"; // Title updated
+    Layout = "_Layout";
+}
+
+<h2>List Genres</h2>
+
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success">@TempData["SuccessMessage"]</div>
+}
+@if (TempData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger">@TempData["ErrorMessage"]</div>
+}
+
+<table class="table table-striped">
+    <thead>
+    <tr>
+        <th>Name</th>
+        <th>Actions</th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var genre in Model) // Variable name updated
+    {
+        <tr>
+            <td>@genre.Name</td>
+            <td>
+                <a href="@Url.Action("Edit", "Genres", new { id = genre.Genre_ID })" class="btn btn-secondary btn-sm">Edit</a>
+                <a href="@Url.Action("Details", "Genres", new { id = genre.Genre_ID })" class="btn btn-info btn-sm">Details</a>
+                @* Updated Delete action to use a form and JavaScript confirmation *@
+                <form asp-action="Delete" asp-route-id="@genre.Genre_ID" method="post" style="display:inline;" onsubmit="return confirm('Are you sure you want to delete the genre: @genre.Name?');">
+                    <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                </form>
+            </td>
+        </tr>
+    }
+    </tbody>
+</table>
+
+<a href="@Url.Action("Add", "Genres")" class="btn btn-primary">Add New Genre</a>
+
+<hr />

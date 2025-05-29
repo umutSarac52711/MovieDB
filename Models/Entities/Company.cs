@@ -2,7 +2,7 @@
 
 namespace MovieDB.Models.Entities;
 
-public class ProductionCompany
+public class Company
 {
     [Key]
     public int Company_ID { get; set; }

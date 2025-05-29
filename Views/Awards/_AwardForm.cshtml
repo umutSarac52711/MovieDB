@@ -1,0 +1,49 @@
+@model MovieDB.Models.AwardViewModel
+
+<div asp-validation-summary="ModelOnly" class="text-danger"></div>
+@if (Model.Award_ID != 0) // For Edit, Award_ID will be set
+{
+    <input type="hidden" asp-for="Award_ID" />
+}
+
+<div class="mb-3">
+    <label asp-for="Award_Event_Name" class="form-label"></label>
+    <input asp-for="Award_Event_Name" class="form-control" />
+    <span asp-validation-for="Award_Event_Name" class="text-danger"></span>
+</div>
+
+<div class="mb-3">
+    <label asp-for="Specific_Award_Category" class="form-label"></label>
+    <input asp-for="Specific_Award_Category" class="form-control" />
+    <span asp-validation-for="Specific_Award_Category" class="text-danger"></span>
+</div>
+
+<div class="mb-3">
+    <label asp-for="Award_Year" class="form-label"></label>
+    <input asp-for="Award_Year" type="number" class="form-control" />
+    <span asp-validation-for="Award_Year" class="text-danger"></span>
+</div>
+
+<div class="mb-3">
+    <label asp-for="Nominee_Awardable_ID" class="form-label"></label>
+    <select asp-for="Nominee_Awardable_ID" class="form-select" asp-items="Model.NomineeAwardables">
+        <option value="">-- Select Nominee --</option>
+    </select>
+    <span asp-validation-for="Nominee_Awardable_ID" class="text-danger"></span>
+</div>
+
+<div class="mb-3">
+    <label asp-for="Movie_Context_ID" class="form-label"></label>
+    <select asp-for="Movie_Context_ID" class="form-select" asp-items="Model.MovieContexts">
+        @* The first item from GetMovieContextSelectList is "N/A" with value "" *@
+    </select>
+    <span asp-validation-for="Movie_Context_ID" class="text-danger"></span>
+</div>
+
+<div class="mb-3">
+    <label asp-for="Nomination_Status" class="form-label"></label>
+    <select asp-for="Nomination_Status" class="form-select" asp-items="Model.NominationStatuses">
+        <option value="">-- Select Status --</option>
+    </select>
+    <span asp-validation-for="Nomination_Status" class="text-danger"></span>
+</div>

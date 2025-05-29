@@ -17,6 +17,10 @@
             <th>Budget</th>
             <th>Revenue</th>
             <th>Rating</th>
+            <th>Genres</th>
+            <th>Actors</th>
+            <th>Directors</th>
+            <th>Company</th>
             <th>Poster URL</th>
             <th>Actions</th>
         </tr>
@@ -32,9 +36,54 @@
                 <td>@movie.Budget.ToString()</td>
                 <td>@movie.Revenue.ToString()</td>
                 <td>@movie.Rating</td>
+                <td>
+                    @if (movie.MovieGenres != null && movie.MovieGenres.Any())
+                    {
+                        @string.Join(", ", movie.MovieGenres.Select(mg => mg.Genre?.Name).Where(name => name != null))
+                    }
+                    else
+                    {
+                        @:N/A
+                    }
+                </td>
+                
+                <td>
+                    @if (movie.MovieActors != null && movie.MovieActors.Any())
+                    {
+                        @string.Join(", ", movie.MovieActors.Select(ma => ma.Actor?.Name).Where(name => name != null))
+                    }
+                    else
+                    {
+                        @:N/A
+                    }
+                </td>
+                
+                <td>
+                    @if (movie.MovieDirectors != null && movie.MovieDirectors.Any())
+                    {
+                        @string.Join(", ", movie.MovieDirectors.Select(md => md.Director?.Name).Where(name => name != null))
+                    }
+                    else
+                    {
+                        @:N/A
+                    }
+                </td>
+                
+                <td>
+                    @if (movie.MovieCompanies != null && movie.MovieCompanies.Any())
+                    {
+                        @(movie.MovieCompanies.FirstOrDefault()?.Company?.Name ?? "N/A")
+                    }
+                    else
+                    {
+                        @:N/A
+                    }
+                </td>
+                
                 <td><img src="@movie.PosterUrl" alt="Poster" style="width: 100px; height: auto;" /></td>
                 <td>
-                    <a href="@Url.Action("Edit", "Movies", new { id = movie.Awardable_ID })" class="btn btn-secondary">Edit</a>
+                    <a href="@Url.Action("Details", "Movies", new { id = movie.Awardable_ID })" class="btn btn-info btn-sm">Details</a>
+                    <a href="@Url.Action("Edit", "Movies", new { id = movie.Awardable_ID })" class="btn btn-secondary btn-sm">Edit</a>
                     
                     <!-- Delete Pop-up -->
                     <form method="post" action="@Url.Action("Delete", "Movies", new { id = movie.Awardable_ID })" style="display:inline-block;" onsubmit="return confirm('Are you sure you want to delete this movie?');">

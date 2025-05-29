@@ -1,57 +1,89 @@
-@model List<MovieDB.Models.Entities.Award>
+@model IEnumerable<MovieDB.Models.Entities.Award>
 
 @{
-    ViewBag.Title = "List Awards";
-    Layout = "_Layout";
+    ViewData["Title"] = "Award Nominations List";
 }
 
-<h2>List Awards</h2>
+<h1>@ViewData["Title"]</h1>
 
-<table class="table table-striped">
+<p>
+    <a asp-action="Add" class="btn btn-primary">Add New Nomination</a>
+</p>
+
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success">
+        @TempData["SuccessMessage"]
+    </div>
+}
+
+<table class="table table-striped table-hover">
     <thead>
-    <tr>
-        <th>Name</th>
-        <th>Year</th>
-        <th>Category</th>
-        <th>Attributed To</th>
-        <th>Actions</th>
-    </tr>
+        <tr>
+            <th>
+                Event Name
+            </th>
+            <th>
+                Category
+            </th>
+            <th>
+                Year
+            </th>
+            <th>
+                Nominee
+            </th>
+            <th>
+                Movie Context
+            </th>
+            <th>
+                Status
+            </th>
+            <th>Actions</th>
+        </tr>
     </thead>
     <tbody>
-    @foreach (var award in Model)
-    {
-        <tr>
-            <td>@award.Name</td>
-            <td>@award.Award_Year</td>
-            <td>@award.Category</td>
-            <td>
-                @{
-                    var awardableName = "N/A";
-                    if (award.Awardable != null)
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Award_Event_Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Specific_Award_Category)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Award_Year)
+                </td>
+                <td>
+                    @if (item.Nominee != null)
                     {
-                        awardableName = award.Awardable.Kind switch
+                        string nomineeName = item.Nominee.Kind switch
                         {
-                            "Movie" => award.Awardable.Movie?.Title,
-                            "Actor" => award.Awardable.Actor?.Name,
-                            "Director" => award.Awardable.Director?.Name,
-                            _ => "Unknown Awardable"
+                            "Movie" => item.Nominee.Movie?.Title,
+                            "Actor" => item.Nominee.Actor?.Name,
+                            "Director" => item.Nominee.Director?.Name,
+                            _ => "Unknown"
                         };
+                        @nomineeName @("(" + item.Nominee.Kind + ")")
                     }
-                }
-                @awardableName
-            </td>
-            <td>
-                <a href="@Url.Action("Edit", "Awards", new { id = award.Award_ID })" class="btn btn-secondary">Edit</a>
-
-                <form method="post" action="@Url.Action("Delete", "Awards", new { id = award.Award_ID })" style="display:inline-block;" onsubmit="return confirm('Are you sure you want to delete this award?');">
-                    <button type="submit" class="btn btn-danger">Delete</button>
-                </form>
-            </td>
-        </tr>
-    }
+                    else
+                    {
+                        <text>N/A</text>
+                    }
+                </td>
+                <td>
+                    @(item.MovieContext?.Title ?? "N/A")
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Nomination_Status)
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.Award_ID" class="btn btn-sm btn-outline-primary">Edit</a> |
+                    <a asp-action="Delete" asp-route-id="@item.Award_ID" class="btn btn-sm btn-outline-danger">Delete</a>
+                    @* You might want a Details view too *@
+                    @* <a asp-action="Details" asp-route-id="@item.Award_ID">Details</a> *@
+                </td>
+            </tr>
+        }
     </tbody>
 </table>
-
-<a href="@Url.Action("Add", "Awards")" class="btn btn-primary">Add New Award</a>
-
-<hr />

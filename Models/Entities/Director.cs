@@ -20,5 +20,5 @@ public class Director
 
     // Navigation Properties
     public virtual Awardable Awardable { get; set; }
-    public virtual ICollection<Features> Features { get; set; } = new List<Features>();
+    public virtual ICollection<MovieDirector> MovieDirectors { get; set; } = new List<MovieDirector>(); // Added this line
 }

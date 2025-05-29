@@ -62,12 +62,35 @@
         
         <div class="mb-3">
             <label asp-for="Genres" class="form-label"></label>
-            @* Türleri düzenlemek için daha gelişmiş bir arayüz (örneğin, çoklu seçim kutusu veya etiket girişi) gerekebilir. *@
-            @* Basit bir örnek olarak, türleri virgülle ayrılmış bir metin olarak düzenleyebilirsiniz. *@
-            <input type="text" class="form-control" asp-for="Genres" value="@(Model.Genres != null ? string.Join(",", Model.Genres) : "")" />
-            <small class="form-text text-muted">Enter genres separated by commas.</small>
+            <select asp-for="Genres" asp-items="ViewBag.Genres as SelectList" class="form-control" multiple="multiple">
+            </select>
             <span asp-validation-for="Genres" class="text-danger"></span>
         </div>
+        
+        <div class="mb-3">
+            <label asp-for="SelectedActorIds" class="form-label"></label>
+            <select asp-for="SelectedActorIds" asp-items="ViewBag.ActorsList as SelectList" class="form-control" multiple="multiple">
+            </select>
+            <span asp-validation-for="SelectedActorIds" class="text-danger"></span>
+        </div>
+        
+        <div class="mb-3">
+            <label asp-for="SelectedDirectorIds" class="form-label">Director</label>
+            <select asp-for="SelectedDirectorIds" asp-items="ViewBag.DirectorsList as SelectList" class="form-control">
+                <option value="">-- Select Director --</option>
+            </select>
+            <span asp-validation-for="SelectedDirectorIds" class="text-danger"></span>
+        </div>
+        
+        <!-- Company -->
+        <div class="mb-3">
+            <label asp-for="SelectedCompanyId" class="form-label">Production Company</label>
+            <select asp-for="SelectedCompanyId" asp-items="ViewBag.CompaniesList as SelectList" class="form-control">
+                <option value="">-- Select Production Company --</option>
+            </select>
+            <span asp-validation-for="SelectedCompanyId" class="text-danger"></span>
+        </div>
+        
 
 
         <button type="submit" class="btn btn-primary mt-3">Save Changes</button>

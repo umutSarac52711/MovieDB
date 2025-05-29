@@ -9,21 +9,22 @@ public class MovieDbContext : DbContext
 
     public DbSet<Awardable> Awardables { get; set; }
     public DbSet<Movie> Movies { get; set; }
+    public DbSet<Genre> Genres { get; set; }
     public DbSet<Actor> Actors { get; set; }
     public DbSet<Director> Directors { get; set; }
     public DbSet<MovieGenre> MovieGenres { get; set; }
-    public DbSet<ProductionCompany> ProductionCompanies { get; set; }
+    public DbSet<Company> Companies { get; set; }
     public DbSet<MovieCompany> MovieCompanies { get; set; }
-    public DbSet<Features> Features { get; set; }
     public DbSet<Review> Reviews { get; set; }
     public DbSet<Award> Awards { get; set; }
+    public DbSet<MovieActor> MovieActors { get; set; }
+    public DbSet<MovieDirector> MovieDirectors { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
 
         // Configure 1-to-1 relationships for Awardable with Movie, Actor, Director
-        // Awardable is the principal, Movie/Actor/Director are dependents sharing the PK.
         modelBuilder.Entity<Awardable>()
             .HasOne(a => a.Movie)
             .WithOne(m => m.Awardable)
@@ -39,59 +40,80 @@ public class MovieDbContext : DbContext
             .WithOne(d => d.Awardable)
             .HasForeignKey<Director>(d => d.Awardable_ID);
 
+        // Composite Key for MovieActor
+        modelBuilder.Entity<MovieActor>()
+            .HasKey(ma => new { ma.Movie_ID, ma.Actor_ID });
+
+        // Configure FK for MovieActor.Movie_ID to Movie.Awardable_ID
+        modelBuilder.Entity<MovieActor>()
+            .HasOne(ma => ma.Movie)
+            .WithMany(m => m.MovieActors)
+            .HasForeignKey(ma => ma.Movie_ID)
+            .HasPrincipalKey(m => m.Awardable_ID)
+            .OnDelete(DeleteBehavior.NoAction);
+
+        // Configure FK for MovieActor.Actor_ID to Actor.Awardable_ID
+        modelBuilder.Entity<MovieActor>()
+            .HasOne(ma => ma.Actor)
+            .WithMany(a => a.MovieActors)
+            .HasForeignKey(ma => ma.Actor_ID)
+            .HasPrincipalKey(a => a.Awardable_ID)
+            .OnDelete(DeleteBehavior.NoAction);
+
+
+        // Composite Key for MovieDirector
+        modelBuilder.Entity<MovieDirector>()
+            .HasKey(md => new { md.Movie_ID, md.Director_ID });
+
+        modelBuilder.Entity<MovieDirector>()
+            .HasOne(md => md.Movie)
+            .WithMany(m => m.MovieDirectors)
+            .HasForeignKey(md => md.Movie_ID)
+            .HasPrincipalKey(m => m.Awardable_ID)
+            .OnDelete(DeleteBehavior.NoAction);
+
+        modelBuilder.Entity<MovieDirector>()
+            .HasOne(md => md.Director)
+            .WithMany(d => d.MovieDirectors)
+            .HasForeignKey(md => md.Director_ID)
+            .HasPrincipalKey(d => d.Awardable_ID)
+            .OnDelete(DeleteBehavior.NoAction);
+
+
         // Composite Key for MovieGenre
         modelBuilder.Entity<MovieGenre>()
-            .HasKey(mg => new { mg.Movie_ID, mg.Genre });
+            .HasKey(mg => new { mg.Movie_ID, mg.Genre_ID });
 
-        // Configure FK for MovieGenre.Movie_ID to Movie.Awardable_ID
         modelBuilder.Entity<MovieGenre>()
             .HasOne(mg => mg.Movie)
             .WithMany(m => m.MovieGenres)
             .HasForeignKey(mg => mg.Movie_ID)
-            .HasPrincipalKey(m => m.Awardable_ID); // Specify principal key if not default 'ID'
+            .HasPrincipalKey(m => m.Awardable_ID);
+            // Default OnDelete is Cascade for required FKs, which is usually fine here
+
+        modelBuilder.Entity<MovieGenre>()
+            .HasOne(mg => mg.Genre)
+            .WithMany(g => g.MovieGenres)
+            .HasForeignKey(mg => mg.Genre_ID);
+            // Default OnDelete is Cascade for required FKs
 
         // Composite Key for MovieCompany
         modelBuilder.Entity<MovieCompany>()
             .HasKey(mc => new { mc.Movie_ID, mc.Company_ID });
 
-        // Configure FK for MovieCompany.Movie_ID to Movie.Awardable_ID
         modelBuilder.Entity<MovieCompany>()
             .HasOne(mc => mc.Movie)
             .WithMany(m => m.MovieCompanies)
             .HasForeignKey(mc => mc.Movie_ID)
             .HasPrincipalKey(m => m.Awardable_ID);
+            // Default OnDelete is Cascade
 
         modelBuilder.Entity<MovieCompany>()
-            .HasOne(mc => mc.ProductionCompany)
+            .HasOne(mc => mc.Company)
             .WithMany(pc => pc.MovieCompanies)
             .HasForeignKey(mc => mc.Company_ID)
             .HasPrincipalKey(pc => pc.Company_ID);
-
-        // Composite Key for Features
-        modelBuilder.Entity<Features>()
-            .HasKey(f => new { f.Movie_ID, f.Director_ID, f.Actor_ID });
-
-        // Configure FKs for Features to respective Awardable_IDs
-        modelBuilder.Entity<Features>()
-            .HasOne(f => f.Movie)
-            .WithMany(m => m.Features)
-            .HasForeignKey(f => f.Movie_ID)
-            .HasPrincipalKey(m => m.Awardable_ID)
-            .OnDelete(DeleteBehavior.Restrict); // Or Cascade, depending on your rules
-
-        modelBuilder.Entity<Features>()
-            .HasOne(f => f.Director)
-            .WithMany(d => d.Features)
-            .HasForeignKey(f => f.Director_ID)
-            .HasPrincipalKey(d => d.Awardable_ID)
-            .OnDelete(DeleteBehavior.Restrict);
-
-        modelBuilder.Entity<Features>()
-            .HasOne(f => f.Actor)
-            .WithMany(a => a.Features)
-            .HasForeignKey(f => f.Actor_ID)
-            .HasPrincipalKey(a => a.Awardable_ID)
-            .OnDelete(DeleteBehavior.Restrict);
+            // Default OnDelete is Cascade
 
         // Configure FK for Review.Movie_ID to Movie.Awardable_ID
         modelBuilder.Entity<Review>()
@@ -99,27 +121,21 @@ public class MovieDbContext : DbContext
             .WithMany(m => m.Reviews)
             .HasForeignKey(r => r.Movie_ID)
             .HasPrincipalKey(m => m.Awardable_ID);
+            // Default OnDelete is Cascade
+            
+        
+        
+        
+            
+            
 
-        // Configure FK for Award.Awardable_ID to Awardable.Awardable_ID
-        modelBuilder.Entity<Award>()
-            .HasOne(aw => aw.Awardable)
-            .WithMany(a => a.Awards)
-            .HasForeignKey(aw => aw.Awardable_ID)
-            .HasPrincipalKey(a => a.Awardable_ID);
-
-        // Movie Entity Constraints
         modelBuilder.Entity<Movie>(entity =>
         {
-            // In real life, there are many movies with the same title
-            // but we can enforce uniqueness on title and release date
             entity.HasIndex(m => new { m.Title, m.Release_Date })
                 .IsUnique();
-
-            // Configure property limits and requirements
             entity.Property(m => m.Title)
-                .IsRequired()    
-                .HasMaxLength(255); 
-
+                .IsRequired()
+                .HasMaxLength(255);
             entity.Property(m => m.Language)
                 .HasMaxLength(50);
         });

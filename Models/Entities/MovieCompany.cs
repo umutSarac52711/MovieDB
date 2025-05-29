@@ -13,5 +13,5 @@ public class MovieCompany
     public virtual Movie Movie { get; set; }
 
     [ForeignKey("Company_ID")]
-    public virtual ProductionCompany ProductionCompany { get; set; }
+    public virtual Company Company { get; set; }
 }
