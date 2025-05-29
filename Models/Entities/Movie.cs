@@ -34,10 +34,11 @@ public class Movie
 
     // Navigation Properties
     public virtual required Awardable Awardable { get; set; } // The "base" Awardable record
-
     public virtual ICollection<MovieGenre> MovieGenres { get; set; } = new List<MovieGenre>();
     public virtual ICollection<MovieCompany> MovieCompanies { get; set; } = new List<MovieCompany>();
-    public virtual ICollection<Features> Features { get; set; } = new List<Features>();
+    public virtual ICollection<MovieActor> MovieActors { get; set; } = new List<MovieActor>();
+    public virtual ICollection<MovieDirector> MovieDirectors { get; set; } = new List<MovieDirector>(); // Added
     public virtual ICollection<Review> Reviews { get; set; } = new List<Review>();
+    public virtual ICollection<Award> NominationsAsContext { get; set; }
     
 }

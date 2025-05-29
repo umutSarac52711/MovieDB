@@ -28,4 +28,14 @@
       <AdditionalFiles Include="Views\ProductionCompanies\List.cshtml" />
     </ItemGroup>
 
+    <ItemGroup>
+      <_ContentIncludedByDefault Remove="Views\Features\Add.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\Features\Edit.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\Features\List.cshtml" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Pages\" />
+    </ItemGroup>
+
 </Project>

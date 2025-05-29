@@ -7,28 +7,34 @@ namespace MovieDB.Models
 {
     public class AwardViewModel
     {
-        // Award_ID is set by the database on creation, or used to identify an existing award for editing.
-        // It's not 'required' from the user when adding a new award.
-        public int Award_ID { get; set; }
+        public int Award_ID { get; set; } // Unique ID for the nomination record
 
-        [Required(ErrorMessage = "The Award Name field is required.")]
-        public string Name { get; set; } // C# 'required' removed, [Required] attribute handles validation.
+        [Display(Name = "Event Name")]
+        [Required]
+        [StringLength(255)]
+        public string Name { get; set; } // e.g., "Academy Awards", "Golden Globes" (was Event_Name)
 
-        [Required(ErrorMessage = "The Year field is required.")]
-        [Range(1900, 2100, ErrorMessage = "Year must be between 1900 and 2100.")]
-        public int Year { get; set; } // C# 'required' removed, [Required] attribute handles validation.
-        
-        [Required(ErrorMessage = "The Category field is required.")]
-        [StringLength(255, ErrorMessage = "Category cannot exceed 255 characters.")]
-        public string Category { get; set; }
-        
-        public int? Awardable_ID { get; set; } // This is the foreign key, nullable.
+        [Required]
+        [StringLength(255)]
+        public string Category { get; set; } // e.g., "Best Picture", "Best Actor" - removed 'required' keyword
 
-        // For the dropdown list in views. Initialize to prevent null issues.
-        public List<SelectListItem> Awardables { get; set; } = new List<SelectListItem>();
+        [Required]
+        public int Year { get; set; } // removed 'required' keyword
 
-        // To capture/display the selected Awardable's name. Make nullable.
-        public string? AwardableName { get; set; }
+        [Display(Name = "Nominee")]
+        [Required]
+        public int Nominee_Awardable_ID { get; set; } // removed 'required' keyword
+
+        [Display(Name = "Movie Context (if applicable)")]
+        public int? Movie_Context_ID { get; set; } // Nullable
+
+        [Display(Name = "Status")]
+        [Required]
+        [StringLength(50)]
+        public string Nomination_Status { get; set; } // "Nominated", "Winner"
+
+        public SelectList AwardablesList { get; set; }
+        public SelectList MoviesList { get; set; }
+        public SelectList NominationStatusList { get; set; }
     }
 }
-

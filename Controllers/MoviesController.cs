@@ -15,8 +15,10 @@ public class MoviesController : Controller
     }
     
     [HttpGet]
-    public IActionResult Add()
+    public async Task<IActionResult> Add()
     {
+        // Provide genres for selection in the view
+        ViewBag.Genres = await dbContext.Genres.ToListAsync();
         return View();
     }
     [HttpPost]
@@ -24,15 +26,12 @@ public class MoviesController : Controller
     {
         if (ModelState.IsValid)
         {
-            // Create a new Awardable entity
             var awardableEntity = new Awardable();
             awardableEntity.Kind = "Movie";
 
             dbContext.Awardables.Add(awardableEntity);
             await dbContext.SaveChangesAsync();
 
-            // Now create the Movie entity with the Awardable_ID from the newly created Awardable
-            
             var movie = new Movie
                 {
                     Awardable_ID = awardableEntity.Awardable_ID,
@@ -45,33 +44,25 @@ public class MoviesController : Controller
                     Revenue = model.Revenue,
                     Rating = model.Rating,
                     PosterUrl = model.PosterUrl,
-                    MovieGenres = new List<MovieGenre>() // Initialize MovieGenres collection
+                    MovieGenres = new List<MovieGenre>()
                 };
-            
-            /* Add genres if any
-            if (model.Genres != null && model.Genres.Count > 0)
+
+            // Add genres by ID
+            if (model.Genres != null)
             {
-                foreach (var genreName in model.Genres)
+                foreach (var genreId in model.Genres)
                 {
-                    if (!string.IsNullOrWhiteSpace(genreName))
-                    {
-                        var movieGenre = new MovieGenre
-                        {
-                            // Movie_ID will be set by EF relationship when added to movie.MovieGenres
-                            Genre = genreName 
-                        };
-                        movie.MovieGenres.Add(movieGenre);
-                    }
+                    movie.MovieGenres.Add(new MovieGenre { Genre_ID = genreId });
                 }
             }
-            */
-            
             
             await dbContext.Movies.AddAsync(movie);
             await dbContext.SaveChangesAsync(); 
             TempData["SuccessMessage"] = "Movie successfully added!";
             return RedirectToAction(nameof(List));
         }
+        // Repopulate genres if model state is invalid
+        ViewBag.Genres = await dbContext.Genres.ToListAsync();
         return View(model);
     }
 
@@ -79,9 +70,7 @@ public class MoviesController : Controller
     public async Task<IActionResult> List()
     {
         var movies = await dbContext.Movies.ToListAsync();
-
         return View(movies);
-
     }
     
     [HttpGet]
@@ -108,7 +97,7 @@ public class MoviesController : Controller
             Revenue = movie.Revenue,
             Rating = movie.Rating,
             PosterUrl = movie.PosterUrl,
-            Genres = movie.MovieGenres.Select(mg => mg.Genre).ToList()
+            Genres = movie.MovieGenres.Select(mg => mg.Genre_ID).ToList()
         };
 
         return View(model);
@@ -137,8 +126,11 @@ public class MoviesController : Controller
             Revenue = movie.Revenue,
             Rating = movie.Rating,
             PosterUrl = movie.PosterUrl,
-            Genres = movie.MovieGenres?.Select(mg => mg.Genre).ToList() ?? new List<string>()
+            Genres = movie.MovieGenres.Select(mg => mg.Genre_ID).ToList()
         };
+
+        // Provide genres for selection in the view
+        ViewBag.Genres = await dbContext.Genres.ToListAsync();
 
         return View(viewModel);
     }
@@ -166,18 +158,17 @@ public class MoviesController : Controller
             movie.Rating = model.Rating;
             movie.PosterUrl = model.PosterUrl;
             
-            // Clear existing genres and add new ones
+            // Remove existing genres
             var existingMovieGenres = dbContext.MovieGenres.Where(mg => mg.Movie_ID == movie.Awardable_ID);
             dbContext.MovieGenres.RemoveRange(existingMovieGenres);
-            
+            await dbContext.SaveChangesAsync();
+
+            // Add new genres by ID
             if (model.Genres != null)
             {
-                foreach (var genreName in model.Genres)
+                foreach (var genreId in model.Genres)
                 {
-                    if (!string.IsNullOrWhiteSpace(genreName))
-                    {
-                        movie.MovieGenres.Add(new MovieGenre { Genre = genreName });
-                    }
+                    movie.MovieGenres.Add(new MovieGenre { Genre_ID = genreId });
                 }
             }
             
@@ -185,6 +176,8 @@ public class MoviesController : Controller
             TempData["SuccessMessage"] = "Movie successfully updated!";
             return RedirectToAction(nameof(List));
         }
+        // Repopulate genres if model state is invalid
+        ViewBag.Genres = await dbContext.Genres.ToListAsync();
         return View(model);
     }
     
@@ -215,13 +208,8 @@ public class MoviesController : Controller
             return NotFound();
         }
 
-        // Remove related MovieGenres
         dbContext.MovieGenres.RemoveRange(movie.MovieGenres);
-        
-        // Remove the movie itself
         dbContext.Movies.Remove(movie);
-        
-        // Remove the Awardable entity
         var awardable = await dbContext.Awardables.FindAsync(movie.Awardable_ID);
         if (awardable != null)
         {
@@ -233,5 +221,4 @@ public class MoviesController : Controller
         TempData["SuccessMessage"] = "Movie successfully deleted!";
         return RedirectToAction(nameof(List));
     }
-    
 }

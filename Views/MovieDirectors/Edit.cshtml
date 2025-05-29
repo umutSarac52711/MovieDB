@@ -1,0 +1,35 @@
+@model MovieDB.Models.MovieDirectorViewModel
+
+@{
+    ViewBag.Title = "Edit Movie-Director Assignment"; // Or "View Movie-Director Assignment"
+    Layout = "_Layout";
+}
+
+<h2>@ViewBag.Title</h2>
+<h4>Director: @Model.DirectorName</h4>
+<h4>Movie: @Model.MovieTitle</h4>
+
+<form method="post" asp-action="Edit" asp-controller="MovieDirectors">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <input type="hidden" asp-for="MovieId" />
+    <input type="hidden" asp-for="DirectorId" />
+
+    <div class="mt-3">
+        @* If MovieDirector had editable properties, they would go here. For example:
+           <div class="mb-3">
+               <label asp-for="RoleInMovie" class="form-label"></label>
+               <input asp-for="RoleInMovie" class="form-control" />
+               <span asp-validation-for="RoleInMovie" class="text-danger"></span>
+           </div>
+        *@
+        
+        <p>Currently, there are no additional properties to edit for this assignment.</p>
+
+        @* <button type="submit" class="btn btn-primary mt-3">Save Changes</button> *@
+        <a asp-action="List" asp-controller="MovieDirectors" class="btn btn-secondary mt-3">Back to List</a>
+    </div>
+</form>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

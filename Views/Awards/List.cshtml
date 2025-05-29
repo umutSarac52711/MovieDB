@@ -10,10 +10,12 @@
 <table class="table table-striped">
     <thead>
     <tr>
-        <th>Name</th>
+        <th>Event Name</th>
         <th>Year</th>
         <th>Category</th>
-        <th>Attributed To</th>
+        <th>Nominee</th>
+        <th>Movie Context</th>
+        <th>Status</th>
         <th>Actions</th>
     </tr>
     </thead>
@@ -21,30 +23,34 @@
     @foreach (var award in Model)
     {
         <tr>
-            <td>@award.Name</td>
+            <td>@award.Event_Name</td>
             <td>@award.Award_Year</td>
             <td>@award.Category</td>
             <td>
                 @{
-                    var awardableName = "N/A";
-                    if (award.Awardable != null)
+                    var nomineeName = "N/A";
+                    if (award.Nominee != null)
                     {
-                        awardableName = award.Awardable.Kind switch
+                        nomineeName = award.Nominee.Kind switch
                         {
-                            "Movie" => award.Awardable.Movie?.Title,
-                            "Actor" => award.Awardable.Actor?.Name,
-                            "Director" => award.Awardable.Director?.Name,
-                            _ => "Unknown Awardable"
+                            "Movie" => award.Nominee.Movie?.Title,
+                            "Actor" => award.Nominee.Actor?.Name,
+                            "Director" => award.Nominee.Director?.Name,
+                            _ => "Unknown Nominee"
                         };
                     }
                 }
-                @awardableName
+                @nomineeName
             </td>
             <td>
-                <a href="@Url.Action("Edit", "Awards", new { id = award.Award_ID })" class="btn btn-secondary">Edit</a>
+                @(award.MovieContext?.Title ?? "N/A")
+            </td>
+            <td>@award.Nomination_Status</td>
+            <td>
+                <a href="@Url.Action("Edit", "Awards", new { id = award.Award_ID })" class="btn btn-secondary btn-sm">Edit</a>
 
-                <form method="post" action="@Url.Action("Delete", "Awards", new { id = award.Award_ID })" style="display:inline-block;" onsubmit="return confirm('Are you sure you want to delete this award?');">
-                    <button type="submit" class="btn btn-danger">Delete</button>
+                <form method="post" action="@Url.Action("DeleteConfirmed", "Awards", new { id = award.Award_ID })" style="display:inline-block;" onsubmit="return confirm('Are you sure you want to delete this award?');">
+                    <button type="submit" class="btn btn-danger btn-sm">Delete</button>
                 </form>
             </td>
         </tr>

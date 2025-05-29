@@ -9,6 +9,7 @@
 
 <form method="post" asp-action="Edit">
     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <input type="hidden" asp-for="Award_ID" />
 
     <div class="mt-3">
         <div class="mb-3">
@@ -25,15 +26,31 @@
         
         <div class="mb-3">
             <label asp-for="Category" class="form-label"></label>
-            <input asp-for="Category" type="number" class="form-control" />
+            <input asp-for="Category" type="text" class="form-control" /> @* Corrected type to text *@
             <span asp-validation-for="Category" class="text-danger"></span>
         </div>
 
         <div class="mb-3">
-            <label asp-for="Awardable_ID" class="form-label">Attributed To (Optional)</label>
-            <select asp-for="Awardable_ID" asp-items="Model.Awardables" class="form-control">
+            <label asp-for="Nominee_Awardable_ID" class="form-label">Attributed To</label>
+            <select asp-for="Nominee_Awardable_ID" asp-items="Model.AwardablesList" class="form-control">
+                <option value="">-- Select Nominee --</option>
             </select>
-            <span asp-validation-for="Awardable_ID" class="text-danger"></span>
+            <span asp-validation-for="Nominee_Awardable_ID" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="Movie_Context_ID" class="form-label"></label>
+            <select asp-for="Movie_Context_ID" asp-items="Model.MoviesList" class="form-control">
+            </select>
+            <span asp-validation-for="Movie_Context_ID" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="Nomination_Status" class="form-label"></label>
+            <select asp-for="Nomination_Status" asp-items="Model.NominationStatusList" class="form-control">
+                <option value="">-- Select Status --</option>
+            </select>
+            <span asp-validation-for="Nomination_Status" class="text-danger"></span>
         </div>
 
         <button type="submit" class="btn btn-primary mt-3">Save Changes</button>

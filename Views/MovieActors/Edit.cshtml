@@ -1,0 +1,39 @@
+@model MovieDB.Models.MovieActorViewModel
+
+@{
+    ViewBag.Title = "Edit Actor's Role in Movie";
+    Layout = "_Layout";
+}
+
+<h2>Edit Role for @Model.ActorName in @Model.MovieTitle</h2>
+
+<form method="post" asp-action="Edit" asp-controller="MovieActors">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <input type="hidden" asp-for="MovieId" />
+    <input type="hidden" asp-for="ActorId" />
+
+    <div class="mt-3">
+        <div class="mb-3">
+            <label class="form-label">Movie</label>
+            <input type="text" class="form-control" value="@Model.MovieTitle" readonly />
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Actor</label>
+            <input type="text" class="form-control" value="@Model.ActorName" readonly />
+        </div>
+        
+        <div class="mb-3">
+            <label asp-for="Role" class="form-label"></label>
+            <input asp-for="Role" class="form-control" />
+            <span asp-validation-for="Role" class="text-danger"></span>
+        </div>
+
+        <button type="submit" class="btn btn-primary mt-3">Save Changes</button>
+        <a asp-action="List" asp-controller="MovieActors" class="btn btn-secondary mt-3">Cancel</a>
+    </div>
+</form>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

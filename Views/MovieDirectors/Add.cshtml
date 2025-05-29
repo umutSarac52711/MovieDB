@@ -1,0 +1,45 @@
+@model MovieDB.Models.MovieDirectorViewModel
+
+@{
+    ViewBag.Title = "Assign Director to Movie"; 
+    Layout = "_Layout";
+}
+
+<h2>@ViewBag.Title</h2>
+
+<form method="post" asp-action="Add" asp-controller="MovieDirectors">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <div class="mt-3">
+        <div class="mb-3">
+            <label asp-for="MovieId" class="form-label">Movie</label>
+            <select asp-for="MovieId" asp-items="Model.MovieList" class="form-control">
+                <option value="">-- Select Movie --</option>
+            </select>
+            <span asp-validation-for="MovieId" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="DirectorId" class="form-label">Director</label>
+            <select asp-for="DirectorId" asp-items="Model.DirectorList" class="form-control">
+                <option value="">-- Select Director --</option>
+            </select>
+            <span asp-validation-for="DirectorId" class="text-danger"></span>
+        </div>
+    
+        @* Add fields for other MovieDirector properties if any *@
+        @* For example:
+           <div class="mb-3">
+               <label asp-for="RoleInMovie" class="form-label">Role in Movie</label>
+               <input type="text" class="form-control" asp-for="RoleInMovie" />
+               <span asp-validation-for="RoleInMovie" class="text-danger"></span>
+           </div>
+        *@
+
+        <button type="submit" class="btn btn-primary mt-3">Assign Director</button>
+        <a asp-action="List" asp-controller="MovieDirectors" class="btn btn-secondary mt-3">Cancel</a>
+    </div>
+</form>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

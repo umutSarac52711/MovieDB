@@ -17,6 +17,7 @@ public class Awardable
     public virtual Actor Actor { get; set; }
     public virtual Director Director { get; set; }
 
-    // An awardable entity can receive multiple awards
+    // An awardable entity can receive multiple awards/nominations
     public virtual ICollection<Award> Awards { get; set; } = new List<Award>();
+    public virtual ICollection<Award> NominationsReceived { get; set; } = new List<Award>();
 }

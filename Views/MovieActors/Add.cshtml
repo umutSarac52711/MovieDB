@@ -1,0 +1,42 @@
+@model MovieDB.Models.MovieActorViewModel
+
+@{
+    ViewBag.Title = "Assign Actor to Movie"; 
+    Layout = "_Layout";
+}
+
+<h2>@ViewBag.Title</h2>
+
+<form method="post" asp-action="Add" asp-controller="MovieActors">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <div class="mt-3">
+        <div class="mb-3">
+            <label asp-for="MovieId" class="form-label">Movie</label>
+            <select asp-for="MovieId" asp-items="Model.MovieList" class="form-control">
+                <option value="">-- Select Movie --</option>
+            </select>
+            <span asp-validation-for="MovieId" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="ActorId" class="form-label">Actor</label>
+            <select asp-for="ActorId" asp-items="Model.ActorList" class="form-control">
+                <option value="">-- Select Actor --</option>
+            </select>
+            <span asp-validation-for="ActorId" class="text-danger"></span>
+        </div>
+    
+        <div class="mb-3">
+            <label asp-for="Role" class="form-label">Role</label>
+            <input type="text" class="form-control" asp-for="Role" />
+            <span asp-validation-for="Role" class="text-danger"></span>
+        </div>
+
+        <button type="submit" class="btn btn-primary mt-3">Assign Actor</button>
+        <a asp-action="List" asp-controller="MovieActors" class="btn btn-secondary mt-3">Cancel</a>
+    </div>
+</form>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

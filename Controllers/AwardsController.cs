@@ -25,6 +25,7 @@ public class AwardsController : Controller // Renamed from ActorsController
                 a.Awardable_ID,
                 Name = a.Kind == "Movie" ? a.Movie.Title : (a.Kind == "Actor" ? a.Actor.Name : (a.Kind == "Director" ? a.Director.Name : "Unknown"))
             })
+            .OrderBy(a => a.Name)
             .ToListAsync();
 
         var selectList = awardables.Select(a => new SelectListItem
@@ -32,9 +33,32 @@ public class AwardsController : Controller // Renamed from ActorsController
             Value = a.Awardable_ID.ToString(),
             Text = a.Name
         }).ToList();
-
-        selectList.Insert(0, new SelectListItem { Value = "", Text = "None (General Award)" });
+        // Nominee is required, so no "None" option. A default selection prompt can be added in the view.
         return selectList;
+    }
+
+    private async Task<List<SelectListItem>> GetMoviesSelectList()
+    {
+        var movies = await dbContext.Movies
+            .OrderBy(m => m.Title)
+            .Select(m => new SelectListItem
+            {
+                Value = m.Awardable_ID.ToString(), // Movie's PK is Awardable_ID
+                Text = m.Title
+            })
+            .ToListAsync();
+
+        movies.Insert(0, new SelectListItem { Value = "", Text = "N/A (e.g., Best Picture Award)" });
+        return movies;
+    }
+
+    private List<SelectListItem> GetNominationStatusSelectList()
+    {
+        return new List<SelectListItem>
+        {
+            new SelectListItem { Value = "Nominated", Text = "Nominated" },
+            new SelectListItem { Value = "Winner", Text = "Winner" }
+        };
     }
 
     [HttpGet]
@@ -42,7 +66,9 @@ public class AwardsController : Controller // Renamed from ActorsController
     {
         var viewModel = new AwardViewModel
         {
-            Awardables = await GetAwardablesSelectList()
+            AwardablesList = new SelectList(await GetAwardablesSelectList(), "Value", "Text"),
+            MoviesList = new SelectList(await GetMoviesSelectList(), "Value", "Text"),
+            NominationStatusList = new SelectList(GetNominationStatusSelectList(), "Value", "Text")
             
         };
         return View(viewModel);
@@ -55,10 +81,12 @@ public class AwardsController : Controller // Renamed from ActorsController
         {
             var award = new Award
             {
-                Name = model.Name,
+                Event_Name = model.Name, // Maps from model.Name
                 Award_Year = model.Year,
                 Category = model.Category,
-                Awardable_ID = model.Awardable_ID // Handle 0 as null
+                Nominee_Awardable_ID = model.Nominee_Awardable_ID,
+                Movie_Context_ID = model.Movie_Context_ID == 0 ? null : model.Movie_Context_ID, // Handle 0 from select list as null
+                Nomination_Status = model.Nomination_Status
             };
 
             await dbContext.Awards.AddAsync(award);
@@ -66,7 +94,9 @@ public class AwardsController : Controller // Renamed from ActorsController
             TempData["SuccessMessage"] = "Award successfully added!";
             return RedirectToAction(nameof(List));
         }
-        model.Awardables = await GetAwardablesSelectList();
+        model.AwardablesList = new SelectList(await GetAwardablesSelectList(), "Value", "Text", model.Nominee_Awardable_ID);
+        model.MoviesList = new SelectList(await GetMoviesSelectList(), "Value", "Text", model.Movie_Context_ID);
+        model.NominationStatusList = new SelectList(GetNominationStatusSelectList(), "Value", "Text", model.Nomination_Status);
         return View(model);
     }
 
@@ -74,12 +104,14 @@ public class AwardsController : Controller // Renamed from ActorsController
     public async Task<IActionResult> List()
     {
         var awards = await dbContext.Awards
-            .Include(a => a.Awardable)
-                .ThenInclude(aw => aw.Movie) // Include Movie for Awardable
-            .Include(a => a.Awardable)
-                .ThenInclude(aw => aw.Actor) // Include Actor for Awardable
-            .Include(a => a.Awardable)
-                .ThenInclude(aw => aw.Director) // Include Director for Awardable
+            .Include(a => a.Nominee) // Eager load the Nominee (Awardable)
+                .ThenInclude(n => n.Movie) // If Nominee is a Movie
+            .Include(a => a.Nominee)
+                .ThenInclude(n => n.Actor) // If Nominee is an Actor
+            .Include(a => a.Nominee)
+                .ThenInclude(n => n.Director) // If Nominee is a Director
+            .Include(a => a.MovieContext) // Eager load the MovieContext
+            .OrderBy(a => a.Event_Name).ThenBy(a => a.Award_Year).ThenBy(a => a.Category)
             .ToListAsync();
 
         return View(awards);
@@ -90,7 +122,11 @@ public class AwardsController : Controller // Renamed from ActorsController
     [HttpGet]
     public async Task<IActionResult> Edit(int id)
     {
-        var award = await dbContext.Awards.FindAsync(id);
+        // Replace FindAsync with FirstOrDefaultAsync to include needed related entities
+        var award = await dbContext.Awards
+            .Include(a => a.Nominee)
+            .Include(a => a.MovieContext)
+            .FirstOrDefaultAsync(a => a.Award_ID == id);
 
         if (award == null)
         {
@@ -100,11 +136,15 @@ public class AwardsController : Controller // Renamed from ActorsController
         var viewModel = new AwardViewModel
         {
             Award_ID = award.Award_ID,
-            Name = award.Name,
+            Name = award.Event_Name,
             Year = award.Award_Year,
             Category = award.Category,
-            Awardable_ID = award.Awardable_ID,
-            Awardables = await GetAwardablesSelectList()
+            Nominee_Awardable_ID = award.Nominee_Awardable_ID,
+            Movie_Context_ID = award.Movie_Context_ID,
+            Nomination_Status = award.Nomination_Status,
+            AwardablesList = new SelectList(await GetAwardablesSelectList(), "Value", "Text", award.Nominee_Awardable_ID),
+            MoviesList = new SelectList(await GetMoviesSelectList(), "Value", "Text", award.Movie_Context_ID),
+            NominationStatusList = new SelectList(GetNominationStatusSelectList(), "Value", "Text", award.Nomination_Status)
         };
 
         return View(viewModel);
@@ -122,16 +162,20 @@ public class AwardsController : Controller // Renamed from ActorsController
                 return NotFound();
             }
 
-            award.Name = model.Name;
+            award.Event_Name = model.Name;
             award.Award_Year = model.Year;
             award.Category = model.Category;
-            award.Awardable_ID = model.Awardable_ID;
+            award.Nominee_Awardable_ID = model.Nominee_Awardable_ID;
+            award.Movie_Context_ID = model.Movie_Context_ID == 0 ? null : model.Movie_Context_ID;
+            award.Nomination_Status = model.Nomination_Status;
             
             await dbContext.SaveChangesAsync();
             TempData["SuccessMessage"] = "Award successfully updated!";
             return RedirectToAction(nameof(List));
         }
-        model.Awardables = await GetAwardablesSelectList();
+        model.AwardablesList = new SelectList(await GetAwardablesSelectList(), "Value", "Text", model.Nominee_Awardable_ID);
+        model.MoviesList = new SelectList(await GetMoviesSelectList(), "Value", "Text", model.Movie_Context_ID);
+        model.NominationStatusList = new SelectList(GetNominationStatusSelectList(), "Value", "Text", model.Nomination_Status);
         return View(model);
     }
     
@@ -140,12 +184,13 @@ public class AwardsController : Controller // Renamed from ActorsController
     public async Task<IActionResult> Delete(int id)
     {
         var award = await dbContext.Awards
-            .Include(a => a.Awardable)
-                .ThenInclude(aw => aw.Movie)
-            .Include(a => a.Awardable)
-                .ThenInclude(aw => aw.Actor)
-            .Include(a => a.Awardable)
-                .ThenInclude(aw => aw.Director)
+            .Include(a => a.Nominee)
+                .ThenInclude(n => n.Movie)
+            .Include(a => a.Nominee)
+                .ThenInclude(n => n.Actor)
+            .Include(a => a.Nominee)
+                .ThenInclude(n => n.Director)
+            .Include(a => a.MovieContext) // Include MovieContext
             .FirstOrDefaultAsync(a => a.Award_ID == id);
 
         if (award == null)
@@ -153,18 +198,19 @@ public class AwardsController : Controller // Renamed from ActorsController
             return NotFound();
         }
         // For display purposes in the delete confirmation view
-        var awardableName = "N/A";
-        if (award.Awardable != null)
+        var nomineeName = "N/A";
+        if (award.Nominee != null)
         {
-            awardableName = award.Awardable.Kind switch
+            nomineeName = award.Nominee.Kind switch
             {
-                "Movie" => award.Awardable.Movie?.Title,
-                "Actor" => award.Awardable.Actor?.Name,
-                "Director" => award.Awardable.Director?.Name,
-                _ => "Unknown Awardable"
+                "Movie" => award.Nominee.Movie?.Title,
+                "Actor" => award.Nominee.Actor?.Name,
+                "Director" => award.Nominee.Director?.Name,
+                _ => "Unknown Nominee"
             };
         }
-        ViewBag.AwardableName = awardableName;
+        ViewBag.NomineeName = nomineeName;
+        ViewBag.MovieContextTitle = award.MovieContext?.Title ?? "N/A";
 
 
         return View(award); // Pass the Award entity to the view

@@ -1,0 +1,40 @@
+@model List<MovieDB.Models.Entities.MovieActor>
+
+@{
+    ViewBag.Title = "List Movie-Actor Assignments";
+    Layout = "_Layout";
+}
+
+<h2>@ViewBag.Title</h2>
+
+<table class="table table-striped">
+    <thead>
+    <tr>
+        <th>Movie Title</th>
+        <th>Actor Name</th>
+        <th>Role</th>
+        <th>Actions</th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>@item.Movie.Title</td>
+            <td>@item.Actor.Name</td>
+            <td>@item.Role</td>
+            <td>
+                <a href="@Url.Action("Edit", "MovieActors", new { movieId = item.MovieId, actorId = item.ActorId })" class="btn btn-secondary btn-sm">Edit Role</a>
+
+                <form method="post" action="@Url.Action("Delete", "MovieActors", new { movieId = item.MovieId, actorId = item.ActorId })" style="display:inline-block;" onsubmit="return confirm('Are you sure you want to remove this actor from this movie?');">
+                    <button type="submit" class="btn btn-danger btn-sm">Remove</button>
+                </form>
+            </td>
+        </tr>
+    }
+    </tbody>
+</table>
+
+<a href="@Url.Action("Add", "MovieActors")" class="btn btn-primary">Assign Actor to Movie</a>
+
+<hr />
