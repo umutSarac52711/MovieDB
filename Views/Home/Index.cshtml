@@ -1,5 +1,14 @@
 ﻿@{
     ViewData["Title"] = "Home Page";
+
+    // Retrieve data from ViewData, providing default empty lists if null
+    var genreChartLabels = ViewData["GenreChartLabels"] as List<string> ?? new List<string>();
+    var genreChartData = ViewData["GenreChartData"] as List<int> ?? new List<int>();
+
+    var revenueBudgetChartData = ViewData["RevenueBudgetChartData"] as List<object> ?? new List<object>();
+
+    var awardsChartLabels = ViewData["AwardsChartLabels"] as List<string> ?? new List<string>();
+    var awardsChartData = ViewData["AwardsChartData"] as List<int> ?? new List<int>();
 }
 
 <div class="text-center">
@@ -21,37 +30,39 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <script>
+    // Movie per Genre Chart
+    var genreLabels = @Html.Raw(Json.Serialize(genreChartLabels));
+    var genreData = @Html.Raw(Json.Serialize(genreChartData));
+
     var ctx1 = document.getElementById('departmentChart').getContext('2d');
     var genreChart = new Chart(ctx1, {
         type: 'bar',
         data: {
-            labels: ['Action', 'Drama', 'Comedy', 'Sci-Fi'],
+            labels: genreLabels,
             datasets: [{
                 label: 'Number of Movies',
-                data: [12, 9, 14, 7],
-                backgroundColor: ['#007bff', '#dc3545', '#ffc107', '#28a745'],
-                borderColor: ['#0056b3', '#a71d2a', '#cc9a06', '#1c7c34'],
+                data: genreData,
+                backgroundColor: ['#007bff', '#dc3545', '#ffc107', '#28a745', '#6f42c1', '#fd7e14', '#20c997', '#6610f2', '#e83e8c'],
+                borderColor: ['#0056b3', '#a71d2a', '#cc9a06', '#1c7c34', '#4e2787', '#c75e09', '#13845c', '#4d0db3', '#a32760'],
                 borderWidth: 1
             }]
         },
         options: {
             responsive: true,
-            scales: { y: { beginAtZero: true } }
+            scales: { y: { beginAtZero: true, ticks: { stepSize: 1 } } }
         }
     });
+
+    // Movie Revenue vs Budget Chart
+    var revenueBudgetDataPoints = @Html.Raw(Json.Serialize(revenueBudgetChartData));
 
     var ctx2 = document.getElementById('listenHoursChart').getContext('2d');
     var revenueBudgetChart = new Chart(ctx2, {
         type: 'scatter',
         data: {
             datasets: [{
-                label: 'Movie Revenue vs Budget',
-                data: [
-                    { x: 50, y: 200 },
-                    { x: 100, y: 300 },
-                    { x: 80, y: 90 },
-                    { x: 40, y: 120 }
-                ],
+                label: 'Movie Revenue vs Budget (in Millions)',
+                data: revenueBudgetDataPoints,
                 backgroundColor: 'rgba(54, 162, 235, 0.6)',
                 borderColor: 'rgba(54, 162, 235, 1)'
             }]
@@ -65,22 +76,26 @@
         }
     });
 
+    // Number of Awards by Candidate Type Chart
+    var awardsLabels = @Html.Raw(Json.Serialize(awardsChartLabels));
+    var awardsData = @Html.Raw(Json.Serialize(awardsChartData));
+    
     var ctx3 = document.getElementById('employeeByDateChart').getContext('2d');
     var awardsChart = new Chart(ctx3, {
         type: 'bar',
         data: {
-            labels: ['Movies', 'Actors', 'Directors'],
+            labels: awardsLabels,
             datasets: [{
                 label: 'Award Count',
-                data: [15, 10, 8],
-                backgroundColor: ['#6f42c1', '#e83e8c', '#17a2b8'],
-                borderColor: ['#4e2787', '#a32760', '#0f6674'],
+                data: awardsData,
+                backgroundColor: ['#6f42c1', '#e83e8c', '#17a2b8', '#fd7e14', '#28a745'],
+                borderColor: ['#4e2787', '#a32760', '#0f6674', '#c75e09', '#1c7c34'],
                 borderWidth: 1
             }]
         },
         options: {
             responsive: true,
-            scales: { y: { beginAtZero: true } }
+            scales: { y: { beginAtZero: true, ticks: { stepSize: 1 } } }
         }
     });
 </script>

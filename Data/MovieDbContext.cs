@@ -109,10 +109,10 @@ public class MovieDbContext : DbContext
             // Default OnDelete is Cascade
 
         modelBuilder.Entity<MovieCompany>()
-            .HasOne(mc => mc.Company)
-            .WithMany(pc => pc.MovieCompanies)
+            .HasOne(mc => mc.Company) // Assuming MovieCompany.Company is of type Company
+            .WithMany(c => c.MovieCompanies) // Assuming Company has ICollection<MovieCompany> MovieCompanies
             .HasForeignKey(mc => mc.Company_ID)
-            .HasPrincipalKey(pc => pc.Company_ID);
+            .HasPrincipalKey(c => c.Company_ID); // Assuming Company has Company_ID as PK
             // Default OnDelete is Cascade
 
         // Configure FK for Review.Movie_ID to Movie.Awardable_ID
