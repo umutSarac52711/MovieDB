@@ -1,101 +1,215 @@
 ﻿@{
     ViewData["Title"] = "Home Page";
-
-    // Retrieve data from ViewData, providing default empty lists if null
-    var genreChartLabels = ViewData["GenreChartLabels"] as List<string> ?? new List<string>();
-    var genreChartData = ViewData["GenreChartData"] as List<int> ?? new List<int>();
-
-    var revenueBudgetChartData = ViewData["RevenueBudgetChartData"] as List<object> ?? new List<object>();
-
-    var awardsChartLabels = ViewData["AwardsChartLabels"] as List<string> ?? new List<string>();
-    var awardsChartData = ViewData["AwardsChartData"] as List<int> ?? new List<int>();
 }
 
 <div class="text-center">
     <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+    <p>Analyze insights from the Movie Database.</p>
 </div>
 
 <div class="container mt-5">
-    <h2 class="text-center">Movie per Genre</h2>
-    <canvas id="departmentChart" width="400" height="200"></canvas>
-
-    <h2 class="text-center mt-5">Movie Revenue vs Budget</h2>
-    <canvas id="listenHoursChart" width="400" height="200"></canvas>
-
-    <h2 class="text-center mt-5">Number of Awards by Candidate Type</h2>
-    <canvas id="employeeByDateChart" width="400" height="200"></canvas>
+    <div class="row">
+        <div class="col-md-6">
+            <h2 class="text-center">Movies per Genre</h2>
+            <div style="height: 300px;">
+                <canvas id="genreChart"></canvas>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <h2 class="text-center">Movie Revenue vs Budget</h2>
+            <div style="height: 300px;">
+                <canvas id="revenueBudgetChart"></canvas>
+            </div>
+        </div>
+    </div>
+    <div class="row mt-5">
+        <div class="col-md-6 offset-md-3"> @* Center this chart *@
+            <h2 class="text-center">Number of Awards Won by Candidate Type</h2>
+            <div style="height: 300px;">
+                <canvas id="awardsByTypeChart"></canvas>
+            </div>
+        </div>
+    </div>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <script>
-    // Movie per Genre Chart
-    var genreLabels = @Html.Raw(Json.Serialize(genreChartLabels));
-    var genreData = @Html.Raw(Json.Serialize(genreChartData));
+    // Option 1: Using System.Text.Json (preferred for .NET 5+)
+    var genreLabels = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(ViewBag.GenreLabels));
+    var genreCounts = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(ViewBag.GenreCounts));
+    var revenueBudgetData = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(ViewBag.RevenueBudgetData));
+    // var revenueBudgetFullData = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(ViewBag.RevenueBudgetFullData));
+    var awardTypeLabels = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(ViewBag.AwardTypeLabels));
+    var awardTypeCounts = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(ViewBag.AwardTypeCounts));
 
-    var ctx1 = document.getElementById('departmentChart').getContext('2d');
-    var genreChart = new Chart(ctx1, {
-        type: 'bar',
-        data: {
-            labels: genreLabels,
-            datasets: [{
-                label: 'Number of Movies',
-                data: genreData,
-                backgroundColor: ['#007bff', '#dc3545', '#ffc107', '#28a745', '#6f42c1', '#fd7e14', '#20c997', '#6610f2', '#e83e8c'],
-                borderColor: ['#0056b3', '#a71d2a', '#cc9a06', '#1c7c34', '#4e2787', '#c75e09', '#13845c', '#4d0db3', '#a32760'],
-                borderWidth: 1
-            }]
-        },
-        options: {
-            responsive: true,
-            scales: { y: { beginAtZero: true, ticks: { stepSize: 1 } } }
-        }
-    });
+    // Debug data in console
+    console.log('Genre Labels:', genreLabels);
+    console.log('Genre Counts:', genreCounts);
+    console.log('Revenue Budget Data:', revenueBudgetData);
+    console.log('Award Type Labels:', awardTypeLabels);
+    console.log('Award Type Counts:', awardTypeCounts);
 
-    // Movie Revenue vs Budget Chart
-    var revenueBudgetDataPoints = @Html.Raw(Json.Serialize(revenueBudgetChartData));
-
-    var ctx2 = document.getElementById('listenHoursChart').getContext('2d');
-    var revenueBudgetChart = new Chart(ctx2, {
-        type: 'scatter',
-        data: {
-            datasets: [{
-                label: 'Movie Revenue vs Budget (in Millions)',
-                data: revenueBudgetDataPoints,
-                backgroundColor: 'rgba(54, 162, 235, 0.6)',
-                borderColor: 'rgba(54, 162, 235, 1)'
-            }]
-        },
-        options: {
-            responsive: true,
-            scales: {
-                x: { title: { display: true, text: 'Budget (in Millions)' }, beginAtZero: true },
-                y: { title: { display: true, text: 'Revenue (in Millions)' }, beginAtZero: true }
+    // 1. Genre Chart
+    if (document.getElementById('genreChart')) {
+        var ctx1 = document.getElementById('genreChart').getContext('2d');
+        var genreChart = new Chart(ctx1, {
+            type: 'bar',
+            data: {
+                labels: genreLabels,
+                datasets: [{
+                    label: 'Film Sayısı',
+                    data: genreCounts,
+                    backgroundColor: [
+                        'rgba(255, 99, 132, 0.7)',
+                        'rgba(54, 162, 235, 0.7)',
+                        'rgba(255, 206, 86, 0.7)',
+                        'rgba(75, 192, 192, 0.7)',
+                        'rgba(153, 102, 255, 0.7)',
+                        'rgba(255, 159, 64, 0.7)',
+                        'rgba(199, 199, 199, 0.7)',
+                        'rgba(83, 102, 255, 0.7)',
+                        'rgba(100, 255, 100, 0.7)',
+                        'rgba(255, 100, 100, 0.7)'
+                    ],
+                    borderColor: [ 
+                        'rgba(255, 99, 132, 1)',
+                        'rgba(54, 162, 235, 1)',
+                        'rgba(255, 206, 86, 1)',
+                        'rgba(75, 192, 192, 1)',
+                        'rgba(153, 102, 255, 1)',
+                        'rgba(255, 159, 64, 1)',
+                        'rgba(199, 199, 199, 1)',
+                        'rgba(83, 102, 255, 1)',
+                        'rgba(100, 255, 100, 1)',
+                        'rgba(255, 100, 100, 1)'
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        title: {
+                            display: true,
+                            text: 'Film Sayısı'
+                        }
+                    },
+                    x: {
+                        title: {
+                            display: true,
+                            text: 'Film Türü'
+                        }
+                    }
+                },
+                plugins: {
+                    legend: {
+                        position: 'top',
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                return `${context.parsed.y} film`;
+                            }
+                        }
+                    }
+                }
             }
-        }
-    });
+        });
+    }
 
-    // Number of Awards by Candidate Type Chart
-    var awardsLabels = @Html.Raw(Json.Serialize(awardsChartLabels));
-    var awardsData = @Html.Raw(Json.Serialize(awardsChartData));
-    
-    var ctx3 = document.getElementById('employeeByDateChart').getContext('2d');
-    var awardsChart = new Chart(ctx3, {
-        type: 'bar',
-        data: {
-            labels: awardsLabels,
-            datasets: [{
-                label: 'Award Count',
-                data: awardsData,
-                backgroundColor: ['#6f42c1', '#e83e8c', '#17a2b8', '#fd7e14', '#28a745'],
-                borderColor: ['#4e2787', '#a32760', '#0f6674', '#c75e09', '#1c7c34'],
-                borderWidth: 1
-            }]
-        },
-        options: {
-            responsive: true,
-            scales: { y: { beginAtZero: true, ticks: { stepSize: 1 } } }
+    // 2. Revenue vs Budget Chart
+    if (document.getElementById('revenueBudgetChart')) {
+        var ctx2 = document.getElementById('revenueBudgetChart').getContext('2d');
+        // Veri formatını doğru şekilde yapılandır
+        var formattedBudgetData = [];
+        for (var i = 0; i < revenueBudgetData.length; i++) {
+            formattedBudgetData.push({
+                x: revenueBudgetData[i].x,
+                y: revenueBudgetData[i].y
+            });
         }
-    });
+
+        var revenueBudgetChart = new Chart(ctx2, {
+            type: 'scatter',
+            data: {
+                datasets: [{
+                    label: 'Movie Revenue vs Budget',
+                    data: formattedBudgetData,
+                    backgroundColor: 'rgba(54, 162, 235, 0.6)',
+                    borderColor: 'rgba(54, 162, 235, 1)',
+                    pointRadius: 5,
+                    pointHoverRadius: 7
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    x: { title: { display: true, text: 'Budget (in Millions)' }, beginAtZero: true },
+                    y: { title: { display: true, text: 'Revenue (in Millions)' }, beginAtZero: true }
+                },
+                plugins: {
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                return `Budget: $${context.parsed.x}M, Revenue: $${context.parsed.y}M`;
+                            }
+                        }
+                    }
+                }
+            }
+        });
+    }
+
+    // 3. Awards by Candidate Type Chart
+    if (document.getElementById('awardsByTypeChart')) {
+        var ctx3 = document.getElementById('awardsByTypeChart').getContext('2d');
+        var awardsChart = new Chart(ctx3, {
+            type: 'pie', 
+            data: {
+                labels: awardTypeLabels,
+                datasets: [{
+                    label: 'Award Wins',
+                    data: awardTypeCounts,
+                    backgroundColor: ['#6f42c1', '#e83e8c', '#17a2b8', '#fd7e14', '#20c997'],
+                    borderColor: ['#FFFFFF', '#FFFFFF', '#FFFFFF', '#FFFFFF', '#FFFFFF'], 
+                    borderWidth: 2
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'top',
+                        labels: {
+                            font: {
+                                size: 14
+                            }
+                        }
+                    },
+                    title: {
+                        display: true,
+                        text: 'Award Wins by Candidate Type',
+                        font: {
+                            size: 16
+                        }
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                const label = context.label || '';
+                                const value = context.raw || 0;
+                                return `${label}: ${value} ödül`;
+                            }
+                        }
+                    }
+                }
+            }
+        });
+    }
 </script>

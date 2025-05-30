@@ -1,5 +1,6 @@
 using System; // Keep for potential future use, though not strictly needed for current props
 using System.ComponentModel.DataAnnotations;
+using MovieDB.Models.Entities;
 
 namespace MovieDB.Models
 {
@@ -16,5 +17,7 @@ namespace MovieDB.Models
 
         [Range(1800, 2200, ErrorMessage = "Founded year must be a valid year.")] // Example range
         public int? Founded_Year { get; set; } // Made nullable to match entity
+        //List of associated Movies
+        public List<Movie> AssociatedMovies { get; set; } = new List<Movie>();
     }
 }

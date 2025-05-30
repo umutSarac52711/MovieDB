@@ -123,6 +123,16 @@ namespace MovieDB.Controllers
             }
 
 
+            // Check if nominee is a Movie and force Movie_Context_ID to null if so
+            if (model.Nominee_Awardable_ID > 0)
+            {
+                var nominee = await dbContext.Awardables.FindAsync(model.Nominee_Awardable_ID);
+                if (nominee != null && nominee.Kind == "Movie")
+                {
+                    model.Movie_Context_ID = null; // Force to null when nominee is a Movie
+                }
+            }
+
             if (ModelState.IsValid)
             {
                 var awardNomination = new Award // Your actual entity
@@ -131,7 +141,7 @@ namespace MovieDB.Controllers
                     Specific_Award_Category = model.Specific_Award_Category,
                     Award_Year = model.Award_Year,
                     Nominee_Awardable_ID = model.Nominee_Awardable_ID,
-                    Movie_Context_ID = (model.Movie_Context_ID == 0 || !model.Movie_Context_ID.HasValue) ? null : model.Movie_Context_ID,
+                    Movie_Context_ID = (model.Nominee_Awardable_ID > 0 && await dbContext.Awardables.Where(a => a.Awardable_ID == model.Nominee_Awardable_ID).Select(a => a.Kind).FirstOrDefaultAsync() == "Movie") ? null : model.Movie_Context_ID,
                     Nomination_Status = model.Nomination_Status
                 };
 

@@ -1,69 +1,97 @@
-using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
-using MovieDB.Models;
-using MovieDB.Data; // Added for MovieDbContext
-using Microsoft.EntityFrameworkCore; // Added for Include, GroupBy, etc.
-using System.Linq; // Added for LINQ methods
-using System.Threading.Tasks; // Added for async operations
+using Microsoft.EntityFrameworkCore;
+using MovieDB.Data; // Your DbContext namespace
+using MovieDB.Models.Entities; // Your Entities namespace
+using System.Diagnostics;
+using System.Linq;
+using System.Threading.Tasks;
+using System.Collections.Generic; // For Dictionary
+using MovieDB.Models; // For ErrorViewModel if you have it
 
-namespace MovieDB.Controllers;
-
-public class HomeController : Controller
+namespace MovieDB.Controllers
 {
-    private readonly ILogger<HomeController> _logger;
-    private readonly MovieDbContext _context; // Added DbContext
-
-    public HomeController(ILogger<HomeController> logger, MovieDbContext context) // Injected DbContext
+    public class HomeController : Controller
     {
-        _logger = logger;
-        _context = context;
-    }
+        private readonly ILogger<HomeController> _logger;
+        private readonly MovieDbContext _dbContext; // Inject your DbContext
 
-    public async Task<IActionResult> Index() // Made async
-    {
-        // Data for Movie per Genre chart
-        var genreData = await _context.MovieGenres
-            .Include(mg => mg.Genre)
-            .Where(mg => mg.Genre != null) // Ensure Genre is not null
-            .GroupBy(mg => mg.Genre.Name)
-            .Select(g => new { Name = g.Key, Count = g.Count() })
-            .OrderBy(g => g.Name)
-            .ToListAsync();
-        
-        ViewData["GenreChartLabels"] = genreData.Select(g => g.Name).ToList();
-        ViewData["GenreChartData"] = genreData.Select(g => g.Count).ToList();
+        public HomeController(ILogger<HomeController> logger, MovieDbContext dbContext)
+        {
+            _logger = logger;
+            _dbContext = dbContext;
+        }
 
-        // Data for Movie Revenue vs Budget chart
-        // Scaling to millions for better readability on the chart if values are large
-        var revenueBudgetData = await _context.Movies
-            .Where(m => m.Budget.HasValue && m.Revenue.HasValue && m.Budget > 0 && m.Revenue > 0) 
-            .Select(m => new { x = m.Budget.Value / 1000000.0m, y = m.Revenue.Value / 1000000.0m }) 
-            .ToListAsync();
-        ViewData["RevenueBudgetChartData"] = revenueBudgetData;
-        
-        // Data for Number of Awards by Candidate Type chart
-        var awardsData = await _context.Awards
-            .Include(a => a.Nominee) // Nominee is the Awardable entity
-            .Where(a => a.Nominee != null) // Ensure Nominee is not null
-            .GroupBy(a => a.Nominee.Kind) // Group by the 'Kind' property of Awardable
-            .Select(g => new { Kind = g.Key, Count = g.Count() })
-            .OrderBy(g => g.Kind)
-            .ToListAsync();
+        public async Task<IActionResult> Index()
+        {
+            // 1. Movies per Genre Data
+            var moviesPerGenre = await _dbContext.MovieGenres
+                .Include(mg => mg.Genre)
+                .GroupBy(mg => mg.Genre)
+                .Select(g => new { Genre = g.Key, Count = g.Count() })
+                .OrderByDescending(x => x.Count)
+                .Take(10) // Take top 10 genres or adjust as needed
+                .ToListAsync();
 
-        ViewData["AwardsChartLabels"] = awardsData.Select(a => a.Kind).ToList();
-        ViewData["AwardsChartData"] = awardsData.Select(a => a.Count).ToList();
+            ViewBag.GenreLabels = moviesPerGenre.Select(x => x.Genre.Name).ToList();
+            ViewBag.GenreCounts = moviesPerGenre.Select(x => x.Count).ToList();
 
-        return View();
-    }
+            // 2. Movie Revenue vs Budget Data
+            var revenueBudget = await _dbContext.Movies
+                .Where(m => m.Budget.HasValue && m.Revenue.HasValue && m.Budget > 0 && m.Revenue > 0) // Ensure data exists
+                .Select(m => new {
+                    Title = m.Title, // For tooltips or labels if needed
+                    Budget = m.Budget.Value / 1000000, // Assuming in millions
+                    Revenue = m.Revenue.Value / 1000000 // Assuming in millions
+                })
+                .Take(50) // Limit the number of points for performance/clarity
+                .ToListAsync();
 
-    public IActionResult Privacy()
-    {
-        return View();
-    }
+            ViewBag.RevenueBudgetData = revenueBudget.Select(rb => new { x = rb.Budget, y = rb.Revenue }).ToList();
+            // For richer tooltips, you could pass the full title, budget, revenue
+            ViewBag.RevenueBudgetFullData = revenueBudget.Select(rb => new { title = rb.Title, budget = rb.Budget, revenue = rb.Revenue }).ToList();
 
-    [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-    public IActionResult Error()
-    {
-        return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+
+            // 3. Number of Awards by Candidate Type (using the new Nomination structure)
+            // This counts unique WINNERS for simplicity, or you can count all nominations.
+            // Let's count unique winners.
+            var awardsByCandidateType = await _dbContext.Awards // This is your nominations table
+                .Where(a => a.Nomination_Status == "Winner") // Only count wins
+                .Include(a => a.Nominee) // The Awardable entity
+                .GroupBy(a => a.Nominee.Kind) // Group by the Kind of the Awardable (Movie, Actor, Director)
+                .Select(g => new { Kind = g.Key, Count = g.Count() }) // Count distinct nominations per kind
+                .ToListAsync();
+
+            // Prepare data for the chart ensuring all expected types are present, even if count is 0
+            var candidateTypes = new List<string> { "Movie", "Actor", "Director" };
+            var awardsData = new Dictionary<string, int>();
+            foreach (var type in candidateTypes)
+            {
+                awardsData[type] = 0; // Initialize with 0
+            }
+            foreach (var item in awardsByCandidateType)
+            {
+                if (awardsData.ContainsKey(item.Kind))
+                {
+                    awardsData[item.Kind] = item.Count;
+                }
+            }
+
+            ViewBag.AwardTypeLabels = awardsData.Keys.ToList();
+            ViewBag.AwardTypeCounts = awardsData.Values.ToList();
+
+
+            return View();
+        }
+
+        public IActionResult Privacy()
+        {
+            return View();
+        }
+
+        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
+        public IActionResult Error()
+        {
+            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        }
     }
 }

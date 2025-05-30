@@ -3,15 +3,21 @@ using Microsoft.EntityFrameworkCore;
 using MovieDB.Data;
 using MovieDB.Models;
 using MovieDB.Models.Entities;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace MovieDB.Controllers;
 
 public class ActorsController : Controller
 {
     private readonly MovieDbContext dbContext;
-    public ActorsController(MovieDbContext dbContext) // Constructor adı ActorsController olarak düzeltildi
+    public ActorsController(MovieDbContext dbContext)
     {
         this.dbContext = dbContext;
+    }
+
+    private async Task PopulateMovieDropdownsAsync()
+    {
+        ViewBag.Movies = new SelectList(await dbContext.Movies.OrderBy(m => m.Title).ToListAsync(), "Awardable_ID", "Title");
     }
     
     [HttpGet]
@@ -65,8 +71,9 @@ public class ActorsController : Controller
     [HttpGet]
     public async Task<IActionResult> Details(int id)
     {
-        var actor = await dbContext.Actors // dbContext.Actors'tan çekildi
-            // MovieGenres ile ilgili Include kaldırıldı
+        var actor = await dbContext.Actors
+            .Include(a => a.MovieActors)
+                .ThenInclude(ma => ma.Movie)
             .FirstOrDefaultAsync(a => a.Awardable_ID == id);
 
         if (actor == null)
@@ -74,15 +81,16 @@ public class ActorsController : Controller
             return NotFound();
         }
 
-        var model = new ActorViewModel // ActorViewModel oluşturuldu
+        var model = new ActorViewModel
         {
             Awardable_ID = actor.Awardable_ID,
-            Name = actor.Name, // Actor özelliklerinden eşlendi
+            Name = actor.Name,
             Birth_Date = actor.Birth_Date,
-            Nationality = actor.Nationality
-            // Genre eşlemesi kaldırıldı
+            Nationality = actor.Nationality,
+            AssociatedMovies = actor.MovieActors?.Select(ma => ma.Movie).ToList() ?? new List<Movie>()
         };
 
+        await PopulateMovieDropdownsAsync();
         return View(model);
     }
     
@@ -155,8 +163,8 @@ public class ActorsController : Controller
     [HttpPost, ActionName("Delete")]
     public async Task<IActionResult> DeleteConfirmed(int id)
     {
-        var actor = await dbContext.Actors // dbContext.Actors'tan çekildi
-            // MovieGenres ile ilgili Include kaldırıldı
+        var actor = await dbContext.Actors
+            .Include(a => a.MovieActors)
             .FirstOrDefaultAsync(a => a.Awardable_ID == id);
 
         if (actor == null)
@@ -164,11 +172,15 @@ public class ActorsController : Controller
             return NotFound();
         }
 
-        // MovieGenres silme mantığı kaldırıldı
-        
+        // Remove all movie-actor associations
+        if (actor.MovieActors != null && actor.MovieActors.Any())
+        {
+            dbContext.MovieActors.RemoveRange(actor.MovieActors);
+        }
+
         // Remove the actor itself
-        dbContext.Actors.Remove(actor); // dbContext.Actors'tan silindi
-        
+        dbContext.Actors.Remove(actor);
+
         // Remove the Awardable entity
         var awardable = await dbContext.Awardables.FindAsync(actor.Awardable_ID);
         if (awardable != null)
@@ -177,9 +189,62 @@ public class ActorsController : Controller
         }
 
         await dbContext.SaveChangesAsync();
-        
-        TempData["SuccessMessage"] = "Actor successfully deleted!"; // Mesaj güncellendi
+
+        TempData["SuccessMessage"] = "Actor successfully deleted!";
         return RedirectToAction(nameof(List));
     }
-    
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> AddMovieAssociation(int actorId, int movieId)
+    {
+        if (actorId <= 0 || movieId <= 0)
+        {
+            TempData["ErrorMessage"] = "Invalid actor or movie ID.";
+            return RedirectToAction(nameof(Details), new { id = actorId });
+        }
+
+        // Check if the association already exists
+        var existingAssociation = await dbContext.MovieActors
+            .AnyAsync(ma => ma.Actor_ID == actorId && ma.Movie_ID == movieId);
+
+        if (existingAssociation)
+        {
+            TempData["InfoMessage"] = "This movie is already associated with this actor.";
+            return RedirectToAction(nameof(Details), new { id = actorId });
+        }
+
+        // Create new association
+        var newAssociation = new MovieActor
+        {
+            Actor_ID = actorId,
+            Movie_ID = movieId
+        };
+
+        await dbContext.MovieActors.AddAsync(newAssociation);
+        await dbContext.SaveChangesAsync();
+
+        TempData["SuccessMessage"] = "Movie association added successfully.";
+        return RedirectToAction(nameof(Details), new { id = actorId });
+    }
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> RemoveMovieAssociation(int actorId, int movieId)
+    {
+        var association = await dbContext.MovieActors
+            .FirstOrDefaultAsync(ma => ma.Actor_ID == actorId && ma.Movie_ID == movieId);
+
+        if (association == null)
+        {
+            TempData["ErrorMessage"] = "Association not found.";
+            return RedirectToAction(nameof(Details), new { id = actorId });
+        }
+
+        dbContext.MovieActors.Remove(association);
+        await dbContext.SaveChangesAsync();
+
+        TempData["SuccessMessage"] = "Movie association removed successfully.";
+        return RedirectToAction(nameof(Details), new { id = actorId });
+    }
 }

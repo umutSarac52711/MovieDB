@@ -3,16 +3,22 @@ using Microsoft.EntityFrameworkCore;
 using MovieDB.Data;
 using MovieDB.Models;
 using MovieDB.Models.Entities;
-using System.Threading.Tasks; // Added for async operations
+using Microsoft.AspNetCore.Mvc.Rendering;
+using System.Threading.Tasks;
 
 namespace MovieDB.Controllers;
 
-public class CompaniesController : Controller // Renamed from ActorsController
+public class CompaniesController : Controller
 {
     private readonly MovieDbContext dbContext;
     public CompaniesController(MovieDbContext dbContext) 
     {
         this.dbContext = dbContext;
+    }
+
+    private async Task PopulateMovieDropdownsAsync()
+    {
+        ViewBag.Movies = new SelectList(await dbContext.Movies.OrderBy(m => m.Title).ToListAsync(), "Awardable_ID", "Title");
     }
     
     [HttpGet]
@@ -47,7 +53,10 @@ public class CompaniesController : Controller // Renamed from ActorsController
     [HttpGet]
     public async Task<IActionResult> List()
     {
-        var companies = await dbContext.Companies.ToListAsync(); 
+        var companies = await dbContext.Companies
+            .Include(c => c.MovieCompanies)
+                .ThenInclude(mc => mc.Movie)
+            .ToListAsync(); 
 
         return View(companies);
     }
@@ -121,7 +130,7 @@ public class CompaniesController : Controller // Renamed from ActorsController
     public async Task<IActionResult> DeleteConfirmed(int id)
     {
         var company = await dbContext.Companies
-            .Include(pc => pc.MovieCompanies) // Include related MovieCompanies for cascading delete or checking
+            .Include(c => c.MovieCompanies)
             .FirstOrDefaultAsync(c => c.Company_ID == id);
 
         if (company == null)
@@ -129,21 +138,97 @@ public class CompaniesController : Controller // Renamed from ActorsController
             return NotFound();
         }
 
-        // Handle related MovieCompanies:
-        // Option 1: If you want to delete MovieCompany entries associated with this ProductionCompany
-        // dbContext.MovieCompanies.RemoveRange(company.MovieCompanies);
-        // Option 2: If your database is set up for cascade delete on MovieCompany when ProductionCompany is deleted,
-        // this might happen automatically.
-        // Option 3: If you want to prevent deletion if there are associated movies, check company.MovieCompanies.Any()
-        // For now, we'll just remove the company. Ensure your DB schema handles relations appropriately.
+        // Explicitly remove the MovieCompany associations
+        if (company.MovieCompanies != null && company.MovieCompanies.Any())
+        {
+            dbContext.MovieCompanies.RemoveRange(company.MovieCompanies);
+        }
 
         dbContext.Companies.Remove(company); 
-        
-        // No Awardable entity to remove for ProductionCompany
-        
+
         await dbContext.SaveChangesAsync();
-        
+
         TempData["SuccessMessage"] = "Production Company successfully deleted!"; 
         return RedirectToAction(nameof(List));
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> Details(int id)
+    {
+        var company = await dbContext.Companies
+            .Include(c => c.MovieCompanies)
+                .ThenInclude(mc => mc.Movie)
+            .FirstOrDefaultAsync(c => c.Company_ID == id);
+
+        if (company == null)
+        {
+            return NotFound();
+        }
+
+        var viewModel = new CompanyViewModel
+        {
+            Company_ID = company.Company_ID,
+            Name = company.Name,
+            Country = company.Country,
+            Founded_Year = company.Founded_Year,
+            AssociatedMovies = company.MovieCompanies?.Select(mc => mc.Movie).ToList() ?? new List<Movie>()
+        };
+
+        await PopulateMovieDropdownsAsync();
+        return View(viewModel);
+    }
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> AddMovieAssociation(int companyId, int movieId)
+    {
+        if (companyId <= 0 || movieId <= 0)
+        {
+            TempData["ErrorMessage"] = "Invalid company or movie ID.";
+            return RedirectToAction(nameof(Details), new { id = companyId });
+        }
+
+        // Check if the association already exists
+        var existingAssociation = await dbContext.MovieCompanies
+            .AnyAsync(mc => mc.Company_ID == companyId && mc.Movie_ID == movieId);
+
+        if (existingAssociation)
+        {
+            TempData["InfoMessage"] = "This movie is already associated with this company.";
+            return RedirectToAction(nameof(Details), new { id = companyId });
+        }
+
+        // Create new association
+        var newAssociation = new MovieCompany
+        {
+            Company_ID = companyId,
+            Movie_ID = movieId
+        };
+
+        await dbContext.MovieCompanies.AddAsync(newAssociation);
+        await dbContext.SaveChangesAsync();
+
+        TempData["SuccessMessage"] = "Movie association added successfully.";
+        return RedirectToAction(nameof(Details), new { id = companyId });
+    }
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> RemoveMovieAssociation(int companyId, int movieId)
+    {
+        var association = await dbContext.MovieCompanies
+            .FirstOrDefaultAsync(mc => mc.Company_ID == companyId && mc.Movie_ID == movieId);
+
+        if (association == null)
+        {
+            TempData["ErrorMessage"] = "Association not found.";
+            return RedirectToAction(nameof(Details), new { id = companyId });
+        }
+
+        dbContext.MovieCompanies.Remove(association);
+        await dbContext.SaveChangesAsync();
+
+        TempData["SuccessMessage"] = "Movie association removed successfully.";
+        return RedirectToAction(nameof(Details), new { id = companyId });
     }
 }

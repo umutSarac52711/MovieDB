@@ -3,15 +3,21 @@ using Microsoft.EntityFrameworkCore;
 using MovieDB.Data;
 using MovieDB.Models;
 using MovieDB.Models.Entities;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace MovieDB.Controllers;
 
-public class DirectorsController : Controller // Renamed from ActorsController
+public class DirectorsController : Controller
 {
     private readonly MovieDbContext dbContext;
-    public DirectorsController(MovieDbContext dbContext) // Constructor name updated
+    public DirectorsController(MovieDbContext dbContext)
     {
         this.dbContext = dbContext;
+    }
+
+    private async Task PopulateMovieDropdownsAsync()
+    {
+        ViewBag.Movies = new SelectList(await dbContext.Movies.OrderBy(m => m.Title).ToListAsync(), "Awardable_ID", "Title");
     }
     
     [HttpGet]
@@ -63,7 +69,9 @@ public class DirectorsController : Controller // Renamed from ActorsController
     [HttpGet]
     public async Task<IActionResult> Details(int id)
     {
-        var director = await dbContext.Directors // dbContext.Directors'tan çekildi
+        var director = await dbContext.Directors
+            .Include(d => d.MovieDirectors)
+                .ThenInclude(md => md.Movie)
             .FirstOrDefaultAsync(d => d.Awardable_ID == id);
 
         if (director == null)
@@ -71,14 +79,16 @@ public class DirectorsController : Controller // Renamed from ActorsController
             return NotFound();
         }
 
-        var model = new DirectorViewModel // DirectorViewModel oluşturuldu
+        var model = new DirectorViewModel
         {
             Awardable_ID = director.Awardable_ID,
-            Name = director.Name, // Director özelliklerinden eşlendi
+            Name = director.Name,
             Birth_Date = director.Birth_Date,
-            Nationality = director.Nationality
+            Nationality = director.Nationality,
+            AssociatedMovies = director.MovieDirectors?.Select(md => md.Movie).ToList() ?? new List<Movie>()
         };
 
+        await PopulateMovieDropdownsAsync();
         return View(model);
     }
     
@@ -145,17 +155,24 @@ public class DirectorsController : Controller // Renamed from ActorsController
     [HttpPost, ActionName("Delete")]
     public async Task<IActionResult> DeleteConfirmed(int id)
     {
-        var director = await dbContext.Directors // dbContext.Directors'tan çekildi
+        var director = await dbContext.Directors
+            .Include(d => d.MovieDirectors)
             .FirstOrDefaultAsync(d => d.Awardable_ID == id);
 
         if (director == null)
         {
             return NotFound();
         }
-        
+
+        // Remove all movie-director associations
+        if (director.MovieDirectors != null && director.MovieDirectors.Any())
+        {
+            dbContext.MovieDirectors.RemoveRange(director.MovieDirectors);
+        }
+
         // Remove the director itself
-        dbContext.Directors.Remove(director); // dbContext.Directors'tan silindi
-        
+        dbContext.Directors.Remove(director);
+
         // Remove the Awardable entity
         var awardable = await dbContext.Awardables.FindAsync(director.Awardable_ID);
         if (awardable != null)
@@ -164,9 +181,62 @@ public class DirectorsController : Controller // Renamed from ActorsController
         }
 
         await dbContext.SaveChangesAsync();
-        
-        TempData["SuccessMessage"] = "Director successfully deleted!"; // Mesaj güncellendi
+
+        TempData["SuccessMessage"] = "Director successfully deleted!";
         return RedirectToAction(nameof(List));
     }
-    
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> AddMovieAssociation(int directorId, int movieId)
+    {
+        if (directorId <= 0 || movieId <= 0)
+        {
+            TempData["ErrorMessage"] = "Invalid director or movie ID.";
+            return RedirectToAction(nameof(Details), new { id = directorId });
+        }
+
+        // Check if the association already exists
+        var existingAssociation = await dbContext.MovieDirectors
+            .AnyAsync(md => md.Director_ID == directorId && md.Movie_ID == movieId);
+
+        if (existingAssociation)
+        {
+            TempData["InfoMessage"] = "This movie is already associated with this director.";
+            return RedirectToAction(nameof(Details), new { id = directorId });
+        }
+
+        // Create new association
+        var newAssociation = new MovieDirector
+        {
+            Director_ID = directorId,
+            Movie_ID = movieId
+        };
+
+        await dbContext.MovieDirectors.AddAsync(newAssociation);
+        await dbContext.SaveChangesAsync();
+
+        TempData["SuccessMessage"] = "Movie association added successfully.";
+        return RedirectToAction(nameof(Details), new { id = directorId });
+    }
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> RemoveMovieAssociation(int directorId, int movieId)
+    {
+        var association = await dbContext.MovieDirectors
+            .FirstOrDefaultAsync(md => md.Director_ID == directorId && md.Movie_ID == movieId);
+
+        if (association == null)
+        {
+            TempData["ErrorMessage"] = "Association not found.";
+            return RedirectToAction(nameof(Details), new { id = directorId });
+        }
+
+        dbContext.MovieDirectors.Remove(association);
+        await dbContext.SaveChangesAsync();
+
+        TempData["SuccessMessage"] = "Movie association removed successfully.";
+        return RedirectToAction(nameof(Details), new { id = directorId });
+    }
 }
